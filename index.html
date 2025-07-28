@@ -4,82 +4,97 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Repositório Permanência</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f7f9fb;
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
       color: #333;
     }
-    header {
+    header, footer {
       background-color: #0d134c;
       color: white;
-      padding: 2rem;
       text-align: center;
+      padding: 1.5rem;
+    }
+    header h1, footer h2 {
+      margin: 0;
     }
     nav {
+      background: #e4e6f2;
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      background-color: #e0e0e0;
       padding: 1rem;
+      flex-wrap: wrap;
       gap: 1rem;
     }
     nav a {
-      color: #0d134c;
       text-decoration: none;
-      font-weight: bold;
+      color: #0d134c;
+      font-weight: 600;
     }
     section {
       max-width: 900px;
       margin: 2rem auto;
-      padding: 1rem;
-      background: #fff;
+      background: white;
+      padding: 1.5rem;
       border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
     h2 {
       color: #0d134c;
+      margin-top: 0;
     }
     details {
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
+      background: #f0f0f0;
+      padding: 1rem;
       border-radius: 6px;
-      padding: 0.5rem 1rem;
-      background: #fafafa;
+      margin-bottom: 1rem;
     }
     summary {
       font-weight: bold;
       cursor: pointer;
     }
-    footer {
-      background-color: #0d134c;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
+    .subnav {
+      margin: 1rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
-    button {
-      background-color: #0d134c;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
+    .subnav a {
+      background: #d9e1f2;
+      padding: 0.4rem 0.8rem;
       border-radius: 4px;
-      cursor: pointer;
-      margin-top: 1rem;
+      font-size: 0.9rem;
     }
-    button:hover {
-      background-color: #2c3780;
+    .searchbar {
+      text-align: center;
+      margin: 1rem auto;
+      padding: 1rem;
+      background: #eef1f5;
     }
-    mark {
-      background: yellow;
+    .searchbar input {
+      width: 60%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    iframe {
+      width: 100%;
+      border: none;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Repositório Permanência</h1>
+    <h1>Ligando os Pontos</h1>
     <p>Conectando propósito, cultura e impacto em cada atendimento</p>
   </header>
 
@@ -87,13 +102,56 @@
     <a href="#inicio">Início</a>
     <a href="#scripts">Sugestão de Scripts</a>
     <a href="#arvore">Árvore de Decisão</a>
-    <a href="#contato">Dê sua Sugestão</a>
+    <a href="#sugestao">De sua Sugestão</a>
   </nav>
 
-  <!-- Campo de Busca -->
-  <div style="background:#f1f1f1;padding:1rem;text-align:center;">
-    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" style="width:60%;padding:0.5rem;border-radius:4px;border:1px solid #ccc;font-size:16px;" onkeyup="searchPage()" />
+  <div class="searchbar">
+    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" onkeyup="searchPage()" />
   </div>
+
+  <section id="inicio">
+    <h2>Boas-vindas</h2>
+    <p>Este espaço foi criado para guiar sua atuação em atendimentos de retenção, com foco em empatia, alinhamento às políticas e cultura do Gran.</p>
+    <p><strong>Frase-chave:</strong> “Quando nos desconectamos da experiência do aluno, a retenção vira número e não propósito. Nosso papel é transformar cada contato em um ponto de conexão verdadeira.”</p>
+  </section>
+
+  <section id="scripts">
+    <h2>Sugestão de Scripts</h2>
+    <div class="subnav">
+      <a href="#arg_generica">🧩 Genérica</a>
+      <a href="#arg_pais">👨‍👩‍👧‍👦 Pais</a>
+      <a href="#tempo">⏳ Tempo</a>
+      <a href="#recorrente">📄 Recorrente</a>
+      <a href="#sete_dias">📅 7 Dias</a>
+      <a href="#financeira">💰 Financeira</a>
+      <a href="#permanencia">🧭 Permanência</a>
+      <a href="#plataforma">💻 Plataforma</a>
+      <a href="#motivacional">🔥 Motivação</a>
+      <a href="#pos_legal">⚖️ Pós Prazo</a>
+      <a href="#segundo_contrato">🔁 2º Contrato</a>
+    </div>
+
+    <details id="arg_generica"><summary>🧩 Argumentação Genérica</summary><p>Esse valor que compartilhei já contempla as melhores condições vigentes, mas entendo que o momento de cada aluno é diferente. Se quiser, posso verificar com meu coordenador se existe alguma outra possibilidade de negociação.</p></details>
+    <details id="arg_pais"><summary>👨‍👩‍👧‍👦 Argumentação com Pais</summary><p>Entendo que toda escolha de investimento na educação envolve a família. O fato de ele estar buscando esse caminho já mostra maturidade e foco. Nossa missão aqui é oferecer todo o suporte para que esse investimento traga retorno real.</p></details>
+    <details id="tempo"><summary>⏳ Cancelamento por Falta de Tempo</summary><p>Entendo como pode ser difícil conciliar os estudos com a rotina. Se quiser, posso te mostrar alternativas mais flexíveis ou benefícios que podem facilitar esse momento sem você precisar abrir mão do seu objetivo.</p></details>
+    <!-- (continue os demais scripts da mesma forma) -->
+  </section>
+
+  <section id="arvore">
+    <h2>Árvore de Decisão – Retenção e Cancelamento</h2>
+    <details><summary>1. Está dentro do prazo legal de 7 dias?</summary><ul><li>✅ Sim: Escute, apresente valor, e só então prossiga com cancelamento</li><li>❌ Não: Analisar tipo de contrato</li></ul></details>
+    <details><summary>2. Tipo de contrato?</summary><ul><li>Recorrente com fidelidade: multa padrão</li><li>Sem fidelidade: verificar política específica</li></ul></details>
+    <!-- (continue os demais passos da árvore de decisão) -->
+  </section>
+
+  <section id="sugestao">
+    <h2>Dê sua sugestão de Script</h2>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>
+  </section>
+
+  <footer>
+    <p>Repositório Permanência © 2025</p>
+  </footer>
 
   <script>
     function searchPage() {
@@ -133,15 +191,6 @@
     }
   </script>
 
-  <!-- ... conteúdo das seções scripts e árvore aqui ... -->
-
-  <section id="contato">
-    <h2>Dê sua sugestão de Script</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" width="640" height="643" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
-  </section>
-
-  <footer>
-    Repositório Permanência © 2025
-  </footer>
 </body>
 </html>
+
