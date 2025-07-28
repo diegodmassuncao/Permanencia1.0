@@ -224,13 +224,16 @@
       <textarea id="mensagem" name="mensagem" rows="5" cols="60"></textarea><br />
       <button type="submit">Enviar</button>
     </form>
+  </section>
 
-  
+  <footer>
+    Repositório de Retenção – Gran Cursos © 2025
+  </footer>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Repositório Permanência</title>
   <style>
     body {
@@ -300,6 +303,9 @@
     button:hover {
       background-color: #2c3780;
     }
+    mark {
+      background: yellow;
+    }
   </style>
 </head>
 <body>
@@ -315,13 +321,50 @@
     <a href="#contato">Dê sua Sugestão</a>
   </nav>
 
-  <section id="inicio">
-    <h2>Boas-vindas</h2>
-    <p>Este espaço foi criado para guiar sua atuação em atendimentos de retenção, com foco em empatia, alinhamento às políticas e cultura do Gran.</p>
-    <p><strong>Frase-chave:</strong> “Quando nos desconectamos da experiência do aluno, a retenção vira número e não propósito. Nosso papel é transformar cada contato em um ponto de conexão verdadeira.”</p>
-  </section>
+  <!-- Campo de Busca -->
+  <div style="background:#f1f1f1;padding:1rem;text-align:center;">
+    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" style="width:60%;padding:0.5rem;border-radius:4px;border:1px solid #ccc;font-size:16px;" onkeyup="searchPage()" />
+  </div>
 
-  <!-- Aqui estariam as seções completas de scripts e árvore de decisão -->
+  <script>
+    function searchPage() {
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      const content = document.body;
+
+      const marks = content.querySelectorAll("mark");
+      marks.forEach(m => {
+        const parent = m.parentNode;
+        parent.replaceChild(document.createTextNode(m.textContent), m);
+        parent.normalize();
+      });
+
+      if (!keyword) return;
+
+      const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+      const matches = [];
+
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (
+          node.nodeValue.toLowerCase().includes(keyword) &&
+          node.parentNode.nodeName !== "SCRIPT" &&
+          node.parentNode.nodeName !== "STYLE"
+        ) {
+          const span = document.createElement("span");
+          const regex = new RegExp(`(${keyword})`, "gi");
+          span.innerHTML = node.nodeValue.replace(regex, "<mark>$1</mark>");
+          node.parentNode.replaceChild(span, node);
+          matches.push(span);
+        }
+      }
+
+      if (matches.length > 0) {
+        matches[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  </script>
+
+  <!-- ... conteúdo das seções scripts e árvore aqui ... -->
 
   <section id="contato">
     <h2>Dê sua sugestão de Script</h2>
@@ -330,13 +373,6 @@
 
   <footer>
     Repositório Permanência © 2025
-  </footer>
-</body>
-</html>
-</section>
-
-  <footer>
-    Repositório de Retenção – Gran Cursos © 2025
   </footer>
 </body>
 </html>
