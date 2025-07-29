@@ -3,411 +3,557 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Repositório Permanência</title>
+  <title>Central de Apoio — Permanência do Aluno Gran</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f5f7fa;
-      color: #333;
-    }
-    header, footer {
-      background-color: #0d134c;
-      color: white;
-      text-align: center;
-      padding: 1.5rem;
-    }
-    /* Sticky nav */
-    nav {
-      background: #e4e6f2;
-      display: flex;
-      justify-content: center;
-      padding: 1rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      transition: box-shadow .2s;
-    }
-    nav.scrolled { box-shadow: 0 2px 8px rgba(13, 19, 76, 0.13);}
-    nav a {
-      text-decoration: none;
-      color: #0d134c;
-      font-weight: 600;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      transition: background .2s, color .2s;
-    }
-    nav a.active,
-    nav a:focus {
-      background: #0d134c;
-      color: #fff;
-      border-radius: 6px;
-      outline: none;
-    }
-    /* Hamburger menu for mobile */
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 2rem;
-      position: absolute;
-      left: 1rem;
-      top: 1rem;
-      z-index: 2000;
-      color: #0d134c;
-    }
-    @media (max-width: 700px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-        padding: 1rem 0.5rem 1rem 3.5rem;
-      }
-      nav.closed { display: none; }
-      .nav-toggle { display: block; }
-    }
-    section {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
-    }
-    h2 { color: #0d134c; margin-top: 0; }
-    details {
-      background: #f0f0f0;
-      padding: 1rem;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-      border: 1px solid #e4e6f2;
-      transition: box-shadow .2s;
-    }
-    details[open] {
-      box-shadow: 0 1px 4px #0d134c22;
-      background: #e9f0fa;
-    }
-    summary {
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1.08rem;
-      outline: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    summary:focus { outline: 2px solid #0d134c; }
-    .category-label {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      background: #d9e1f2;
-      color: #0d134c;
-      border-radius: 14px;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-    .script-cats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0 0 1rem 0;
-    }
-    .script-cats button {
-      background: #f5f7fa;
-      border: 1px solid #d9e1f2;
-      color: #0d134c;
-      border-radius: 4px;
-      font-size: 0.98rem;
-      padding: 0.4rem 1rem;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .script-cats button.active {
-      background: #0d134c;
-      color: #fff;
-    }
-    .expand-collapse {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-bottom: 0.7rem;
-    }
-    .expand-collapse button {
-      background: #e4e6f2;
-      color: #0d134c;
-      border: none;
-      padding: 0.35rem 1.2rem;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .expand-collapse button:hover { background: #d9e1f2; }
-    .searchbar {
-      text-align: center;
-      margin: 1rem auto;
-      padding: 1rem;
-      background: #eef1f5;
-    }
-    .searchbar input {
-      width: 60%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    .search-feedback {
-      color: #e25c3f;
-      font-size: 1.02rem;
-      margin-top: 0.5rem;
-    }
-    iframe {
-      width: 100%;
-      border: none;
-      min-height: 400px;
-    }
-    /* Mobile improvements */
+    body { margin: 0; font-family: 'Inter', sans-serif; background: #f5f7fa; color: #222;}
+    header, footer { background-color: #0d134c; color: white; text-align: center; padding: 1.5rem 1rem;}
+    .container { max-width: 1100px; margin: 2rem auto; background: white; padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);}
+    h1, h2, h3 { color: #0d134c; margin-top: 0;}
+    .segment-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;}
+    .segment-selector button { padding: 0.6rem 1.3rem; border: none; border-radius: 6px; font-weight: 600; background: #e4e6f2; color: #0d134c; cursor: pointer; transition: background .2s, color .2s; font-size: 1rem;}
+    .segment-selector button.active { background: #0d134c; color: #fff;}
+    .quick-menu { display: flex; gap: 1rem; justify-content: center; margin: 0 0 2rem 0; flex-wrap: wrap; position: sticky; top: 0; background: #fff; z-index: 20; padding: 1rem 0 0.3rem 0;}
+    .quick-menu a { text-decoration: none; color: #0d134c; font-weight: 600; background: #e4e6f2; border-radius: 5px; padding: 0.35rem 1.1rem; font-size: 1.01rem; transition: background .2s;}
+    .quick-menu a.active, .quick-menu a:hover { background: #0d134c; color: #fff;}
+    .searchbar { text-align: center; margin: 0 auto 1.3rem auto; padding: 1rem; background: #eef1f5; border-radius: 8px; max-width: 600px;}
+    .searchbar input { width: 75%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;}
+    .search-feedback { color: #e25c3f; font-size: 1.02rem; margin-top: 0.5rem;}
+    .cards-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; justify-content: space-between;}
+    .policy-card { background: #f5f7fa; border-radius: 10px; padding: 1.2rem 1rem; flex: 1 1 250px; min-width: 270px; box-shadow: 0 1px 4px #0001; margin-bottom: 0.5rem;}
+    .policy-card h3 { font-size: 1.09rem; margin-bottom: 0.7rem;}
+    .policy-card ul { margin: 0; padding-left: 1.3rem; font-size: 0.98rem;}
+    .aviso { background: #ffe8a3; color: #a66406; border-left: 6px solid #ffbb33; padding: 0.4rem 0.9rem; margin: 0.7rem 0 1.2rem 0; border-radius: 6px;}
+    .quick-links, .faq-list { margin-bottom: 1.7rem;}
+    .quick-links a { display: inline-block; background: #e4e6f2; color: #0d134c; padding: 0.35rem 1rem; border-radius: 4px; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.4rem; text-decoration: none; font-size: 0.96rem; transition: background .2s;}
+    .quick-links a:hover { background: #0d134c; color: #fff;}
+    .decision-tree, .script-section, .sla-table, .faq-section, .objection-breaker, .suggestion-section { margin-bottom: 2rem;}
+    details { background: #f5f7fa; margin-bottom: 0.5rem; border-radius: 6px; padding: 1rem; border: 1px solid #e4e6f2; transition: box-shadow .2s;}
+    details[open] { box-shadow: 0 1px 4px #0d134c22; background: #e9f0fa;}
+    summary { font-weight: 600; font-size: 1.03rem; cursor: pointer;}
+    .faq-list details { padding: 0.7rem 1rem;}
+    .sla-table table { border-collapse: collapse; width: 100%; background: #f8fafd;}
+    .sla-table th, .sla-table td { padding: 0.5rem 0.8rem; border: 1px solid #e4e6f2; font-size: 0.97rem;}
+    .sla-table th { background: #e4e6f2;}
+    @media (max-width: 900px) { .cards-grid { flex-direction: column; } .policy-card { min-width: unset; } }
     @media (max-width: 600px) {
-      section { padding: 1rem; margin: 1rem 0.3rem; }
+      .container { padding: 1rem 0.2rem; }
       .searchbar input { width: 95%; font-size: 1.03rem; }
-      .expand-collapse { flex-direction: column; gap: 0.4rem; }
+      .quick-menu { flex-direction: column; align-items: center; gap: 0.7rem; padding-bottom: 0.5rem; }
     }
-    /* Acessibilidade */
-    .sr-only {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
+    .version-tag { font-size: 0.96rem; color: #666; margin-top: 2rem; text-align: right;}
+    .flow-arrow { margin: 0 0.3rem; color: #8b98a5;}
+    .flow-step { font-weight: 600; color: #0d134c;}
+    .objection-breaker details { border-left: 4px solid #0d134c; }
+    .objection-breaker summary { font-size: 1.04rem; color: #d87d1c;}
+    .objection-breaker ul { margin-top: 0.5rem; }
+    .objection-breaker li { margin-bottom: 0.4rem;}
+    .suggestion-section { background: #f5f7fa; border-radius: 10px; padding: 1.5rem 1rem; box-shadow: 0 1px 4px #0001; text-align: center;}
+    .suggestion-section button { background: #0d134c; color: #fff; padding: 0.7rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; }
+    .suggestion-section iframe { width: 100%; min-height: 450px; border: none; margin-top: 1rem;}
   </style>
 </head>
 <body>
-  <button class="nav-toggle" aria-label="Abrir menu" id="navToggle">&#9776;</button>
   <header>
-    <h1>Permanência do Aluno</h1>
-    <p>Conectando propósito, cultura e impacto em cada atendimento</p>
+    <h1>Central de Apoio à Permanência — Gran Cursos</h1>
+    <p>Scripts, Políticas e Fluxos Oficiais para Atendimento e Retenção</p>
   </header>
-
-  <nav id="mainNav" aria-label="Navegação principal">
-    <a href="#inicio">Início</a>
-    <a href="#scripts">Scripts</a>
-    <a href="#arvore">Árvore de Decisão</a>
-    <a href="#sugestao">Sugestão</a>
-  </nav>
-
-  <div class="searchbar">
-    <label for="searchInput" class="sr-only">Buscar scripts</label>
-    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" autocomplete="off" />
-    <div class="search-feedback" id="searchFeedback" aria-live="polite"></div>
+  <div class="container">
+    <div class="segment-selector" aria-label="Selecione o segmento">
+      <button class="active" data-segment="prep">Cursos Preparatórios</button>
+      <button data-segment="ead">Ensino Superior EAD</button>
+      <button data-segment="presencial">Ensino Superior Presencial</button>
+    </div>
+    <!-- MENU RÁPIDO -->
+    <nav class="quick-menu" id="quickMenu">
+      <a href="#politica" class="active">Política</a>
+      <a href="#scripts">Scripts</a>
+      <a href="#objeções">Objeções</a>
+      <a href="#faq">FAQ</a>
+      <a href="#sugestoes">Sugestões</a>
+    </nav>
+    <!-- Campo de pesquisa -->
+    <div class="searchbar">
+      <label for="searchInput" style="font-weight:600; margin-right:0.8rem;">Pesquisar por palavra-chave:</label>
+      <input id="searchInput" type="text" placeholder="Digite e pressione Enter…" autocomplete="off" />
+      <div class="search-feedback" id="searchFeedback"></div>
+    </div>
+    <div id="politica" tabindex="-1"></div>
+    <div id="policyCards" class="cards-grid"></div>
+    <div class="aviso" id="aviso"></div>
+    <div class="quick-links" id="quickLinks"></div>
+    <div class="decision-tree" id="decisionTree"></div>
+    <div id="scripts" tabindex="-1"></div>
+    <div class="script-section" id="scriptSection"></div>
+    <div id="objeções" tabindex="-1"></div>
+    <div class="objection-breaker" id="objectionBreaker"></div>
+    <div class="sla-table" id="slaTable"></div>
+    <div id="faq" tabindex="-1"></div>
+    <div class="faq-section" id="faqSection"></div>
+    <div id="sugestoes" tabindex="-1"></div>
+    <div class="suggestion-section" id="suggestionSection">
+      <h2>Dê sua Sugestão ou Nova Situação de Atendimento</h2>
+      <p>Use este canal para contribuir com melhorias, novas respostas ou apontar dúvidas de política!</p>
+      <button id="loadFormBtn">Abrir formulário de sugestão</button>
+      <div id="formContainer"></div>
+    </div>
+    <div class="version-tag" id="versionTag">
+      Baseado nas políticas oficiais — revisado em julho/2025
+    </div>
   </div>
-
-  <section id="inicio" tabindex="0">
-    <h2>Boas-vindas</h2>
-    <p>Este espaço foi criado para guiar sua atuação em atendimentos de retenção, com foco em empatia, alinhamento às políticas e cultura do Gran.</p>
-    <p><strong>Frase-chave:</strong> “Quando nos desconectamos da experiência do aluno, a retenção vira número e não propósito. Nosso papel é transformar cada contato em um ponto de conexão verdadeira.”</p>
-  </section>
-
-  <section id="scripts" tabindex="0">
-    <h2>Sugestão de Scripts</h2>
-    <div class="script-cats" aria-label="Filtrar scripts por categoria">
-      <button type="button" class="active" data-cat="todos">Todos</button>
-      <button type="button" data-cat="cancelamento">Cancelamento</button>
-      <button type="button" data-cat="dificuldade">Dificuldade/Objeções</button>
-      <button type="button" data-cat="financeiro">Financeiro</button>
-      <button type="button" data-cat="motivacional">Motivacional</button>
-      <button type="button" data-cat="tecnico">Técnico/Plataforma</button>
-    </div>
-    <div class="expand-collapse">
-      <button type="button" id="expandAll">Expandir todos</button>
-      <button type="button" id="collapseAll">Recolher todos</button>
-    </div>
-    <div id="scriptsList">
-      <!-- Cada script agora tem um data-cat para filtragem -->
-      <details data-cat="cancelamento"><summary>⏳ Cancelamento por Falta de Tempo</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Entendo como pode ser difícil conciliar os estudos com a rotina. Se quiser, posso te mostrar alternativas mais flexíveis ou benefícios que podem facilitar esse momento sem você precisar abrir mão do seu objetivo.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>📅 Dentro do prazo de 7 dias</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Você está dentro do prazo de arrependimento garantido por lei, e claro que podemos seguir com seu pedido. Mas antes disso, posso te apresentar tudo que o Gran oferece? Nosso conteúdo é vasto, prático e pensado para transformar sua rotina em direção à aprovação.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>🔁 Cancelamento por Renovação Automática</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Entendo que a renovação automática possa ter passado despercebida. A gente ativa essa função para garantir sua continuidade sem interrupções, mas estou aqui para te explicar tudo e encontrar a melhor solução — inclusive, podemos avaliar a permanência com condições ajustadas.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>🆙 Cancelamento por Upgrade</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>O upgrade é uma funcionalidade automática para garantir que você tenha sempre o melhor plano disponível. Mas entendo que possa ter gerado dúvidas — posso revisar com você as condições, valores e ver se há um caminho que faça mais sentido para o seu momento?</p>
-      </details>
-      <details data-cat="cancelamento"><summary>📚 Cancelamento de Curso Avulso</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Nosso curso avulso tem regras específicas: após 7 dias, o valor não é estornado, mas é convertido integralmente em crédito para você usar em outro curso. Posso te mostrar como aplicar esse crédito da melhor forma?</p>
-      </details>
-      <details data-cat="cancelamento"><summary>🙋‍♂️ Cancelamento por “Não Usei”</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Mesmo que você não tenha acessado o curso, a vaga, suporte e conteúdo ficam reservados para você desde a ativação. Mas estou aqui para entender seu cenário e, se for o caso, ajustar algo que facilite sua permanência.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>📉 Cancelamento por Reprovação</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Sei como a reprovação pode abalar a confiança, mas ela também pode ser o começo de uma nova estratégia. Podemos revisar seu plano de estudos juntos? O Gran está aqui para te apoiar em cada tentativa.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>🎯 Cancelamento por Mudança de Foco</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Se sua meta mudou, que bom que você se escuta e se adapta! Podemos ver se temos algo que converse melhor com sua nova fase — o conhecimento que você já acessou também faz parte da sua bagagem.</p>
-      </details>
-      <details data-cat="dificuldade"><summary>🧩 Argumentação Genérica</summary>
-        <span class="category-label">Dificuldade/Objeções</span>
-        <p>Esse valor que compartilhei já contempla as melhores condições vigentes, mas entendo que o momento de cada aluno é diferente. Se quiser, posso verificar com meu coordenador se existe alguma outra possibilidade de negociação.</p>
-      </details>
-      <details data-cat="dificuldade"><summary>👨‍👩‍👧‍👦 Argumentação com Pais</summary>
-        <span class="category-label">Dificuldade/Objeções</span>
-        <p>Entendo que toda escolha de investimento na educação envolve a família. O fato de ele estar buscando esse caminho já mostra maturidade e foco. Nossa missão aqui é oferecer todo o suporte para que esse investimento traga retorno real.</p>
-      </details>
-      <details data-cat="financeiro"><summary>💰 Dificuldade Financeira</summary>
-        <span class="category-label">Financeiro</span>
-        <p>Sei que o momento financeiro pode pesar, e por isso podemos juntos revisar seu plano. Nosso objetivo é que a parte financeira não seja um impeditivo para o seu sonho.</p>
-      </details>
-      <details data-cat="motivacional"><summary>🧭 Incentivo à Permanência</summary>
-        <span class="category-label">Motivacional</span>
-        <p>Você já avançou tanto nessa jornada… e sabemos que obstáculos fazem parte. Que tal dar um passo de cada vez, com o apoio do nosso time?</p>
-      </details>
-      <details data-cat="tecnico"><summary>💻 Insatisfação com a Plataforma</summary>
-        <span class="category-label">Técnico/Plataforma</span>
-        <p>Sinto muito que sua experiência não tenha sido positiva até agora. Posso te mostrar como tirar mais proveito do conteúdo e recursos?</p>
-      </details>
-      <details data-cat="motivacional"><summary>🔥 Motivacional</summary>
-        <span class="category-label">Motivacional</span>
-        <p>Sei que manter a motivação nem sempre é fácil, mas você chegou até aqui por mérito próprio. Estou aqui para te ajudar a seguir em frente, com leveza e no seu tempo.</p>
-      </details>
-      <details data-cat="cancelamento"><summary>⚖️ Pós Prazo Legal</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Mesmo após o prazo legal de 7 dias, estamos aqui para entender sua situação. Nosso papel é te apoiar e buscar caminhos viáveis para sua permanência — posso te apresentar algumas possibilidades?</p>
-      </details>
-      <details data-cat="cancelamento"><summary>🔁 Segundo Contrato</summary>
-        <span class="category-label">Cancelamento</span>
-        <p>Em contratos renovados, a política de cancelamento é diferente, e o prazo de 7 dias não se aplica. Ainda assim, posso te apresentar o que está previsto e verificar juntos alguma solução viável.</p>
-      </details>
-      <details data-cat="financeiro"><summary>📄 Contrato Recorrente</summary>
-        <span class="category-label">Financeiro</span>
-        <p>No plano com fidelidade, as condições de cancelamento incluem a aplicação da multa contratual, conforme combinado no ato da compra. Posso te mostrar como esse valor é calculado e se há alguma alternativa viável para você continuar com a gente?</p>
-      </details>
-      <details data-cat="motivacional"><summary>🎁 Oferta de Reativação com Voucher</summary>
-        <span class="category-label">Motivacional</span>
-        <p>Sabemos que às vezes é preciso dar uma pausa — por isso, temos condições especiais para você retomar sua jornada com ainda mais suporte. Posso te mostrar um benefício exclusivo?</p>
-      </details>
-      <details data-cat="motivacional"><summary>🔄 Migração para Outro Curso</summary>
-        <span class="category-label">Motivacional</span>
-        <p>Se o curso atual não está alinhado ao que você precisa, podemos ver juntos a possibilidade de migrar para outro. Assim, você continua avançando sem precisar recomeçar do zero.</p>
-      </details>
-    </div>
-  </section>
-
-  <section id="arvore" tabindex="0">
-    <h2>Árvore de Decisão – Retenção e Cancelamento (Versão com Esforço de Valor)</h2>
-    <details><summary>1. O aluno está dentro do prazo legal de 7 dias?</summary><ul><li>✅ Sim → Escute o motivo com atenção. Demonstre valor do produto. Se for objeção solucionável: busque reverter com empatia. Se insistir: prossiga com reembolso integral.</li><li>❌ Não → Ir para análise do tipo de contrato.</li></ul></details>
-    <details><summary>2. Qual o tipo de contrato do aluno?</summary><ul><li>📌 Recorrente com fidelidade: aplicar multa de 20%.</li><li>📌 Não recorrente com fidelidade: aplicar mesma regra, com reembolso proporcional.</li><li>📌 Sem fidelidade ou promocional: verificar condições específicas.</li></ul></details>
-    <details><summary>3. Qual é o perfil ou objeção do aluno?</summary><ul><li>😓 Desmotivação → Valorize o sonho e trajetória.</li><li>⏳ Falta de tempo → Reforce flexibilidade e autonomia.</li><li>💰 Dificuldade financeira → Verificar possibilidade de readequação ou renegociação.</li><li>⚙️ Problemas técnicos → Demonstrar empatia, abrir D.I., acompanhar solução.</li></ul></details>
-    <details><summary>4. Esforço de retenção aplicado?</summary><ul><li>✔️ Sim → Formalizar permanência com condições ajustadas.</li><li>❌ Não → Aplicar política de cancelamento.</li></ul></details>
-    <details><summary>5. Forma de pagamento</summary><ul><li>💳 Cartão → Orientar troca pelo Portal.</li><li>💸 PIX/Boleto → Gerar link com prazos.</li></ul></details>
-    <details><summary>6. Encerramento humanizado</summary><ul><li>Ao reter: "Conte com a gente até a sua aprovação. Estamos do seu lado."</li><li>Ao cancelar: "Lamentamos sua saída, mas respeitamos sua escolha. Quando quiser voltar, estaremos prontos pra te receber."</li></ul></details>
-  </section>
-
-  <section id="sugestao" tabindex="0">
-    <h2>Dê sua sugestão de Script</h2>
-    <div id="formContainer" style="min-height:420px;display:flex;align-items:center;justify-content:center;">
-      <button id="loadForm" style="background:#0d134c;color:#fff;padding:0.7rem 2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;">Carregar formulário</button>
-    </div>
-  </section>
-
   <footer>
-    <p>Repositório Permanência © 2025</p>
+    <p>Permanência Gran © 2025 | Página de uso exclusivo interno</p>
   </footer>
-
   <script>
-    // Sticky nav shadow
-    window.addEventListener("scroll", function(){
-      const nav = document.getElementById('mainNav');
-      nav.classList.toggle('scrolled', window.scrollY > 0);
-    });
+    // === BLOCO DE DADOS E FUNÇÕES ===
+    // 1. Dados de todos os segmentos, scripts, cards, FAQ, objeções
+    // 2. Função renderSegment para preencher todas as seções
+    // 3. Busca global
+    // 4. Troca de segmento
+    // 5. Menu rápido de navegação
+    // 6. Lazy load do formulário
 
-    // Hamburger for mobile
-    const navToggle = document.getElementById('navToggle');
-    const nav = document.getElementById('mainNav');
-    navToggle.addEventListener('click', function() {
-      nav.classList.toggle('closed');
-    });
+    // [O BLOCO É LONGO DEMAIS PARA ESTA ÚNICA RESPOSTA. Siga para a PRÓXIMA MENSAGEM, que terá o JavaScript + Dados. Cole junto no final do arquivo!]
+// =============== BLOCO DE DADOS SEGMENTS ================
+const segments = {
+  prep: {
+    name: "Cursos Preparatórios",
+    policyCards: [
+      { title: "Renovação", items: [
+        "<b>Renovação automática:</b> sem fidelidade, se houver cartão de crédito cadastrado. Antecipada com fidelidade: opção de bônus progressivos.",
+        "<b>Valor considerado:</b> sempre o maior entre última compra/renovação e tabela vigente (sem descontos e promoções).",
+        "<b>Antecipada com fidelidade:</b> opção de 6 meses (+1 mês bônus), 9 meses (+2 bônus), 12 meses (+3 bônus).",
+        "Desconto de 5% para pagamento em PIX/Boleto em renovação antecipada.",
+        "<b>Pontuação Gran Clube:</b> disponível para alunos cadastrados, conforme regulamento."
+      ]},
+      { title: "Cancelamento & Multa", items: [
+        "<b>Até 7 dias:</b> sem multa, estorno total.",
+        "<b>Após 7 dias:</b> multa de 20% sobre valor total sem descontos, limitada a 80% do valor pago.",
+        "<b>Contrato recorrente:</b> multa no cartão, cobrança suspensa; não recorrente: multa no valor a ser devolvido.",
+        "<b>Segunda contratação:</b> não há multa até 7 dias.",
+        "<b>Contrato cancelado não pode ser reativado.</b>"
+      ]},
+      { title: "Retenção, Crédito e Ofertas", items: [
+        "Ofertas possíveis: manter valor, desconto, meses bônus, crédito, migração/downgrade.",
+        "Créditos: só podem ser usados na mesma BU, válidos por 2 anos.",
+        "Nunca solicitar dados de cartão ao aluno! Alteração sempre via portal do aluno.",
+        "Solicitações de cancelamento devem ser classificadas corretamente na árvore de motivos."
+      ]}
+    ],
+    aviso: "⚠️ <b>Importante:</b> Sempre confirme o tipo de contrato e data de aquisição antes de calcular multa ou aplicar ofertas. <b>Jamais solicite dados de cartão.</b>",
+    quickLinks: [
+      { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
+      { text: "Regulamento completo", href: "#", target: "_blank"},
+      { text: "Régua de Comunicação", href: "https://www.figma.com/file/W9agIpg6N0X32nTYoXqk8m/E-mails-Transacionais?node-id=1%3A10282&t=uRbG0zH1jRqHvoOA-0", target: "_blank"},
+      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+    ],
+    decisionTree: `
+<details><summary><span class="flow-step">1. Tipo de solicitação do aluno?</span></summary>
+  <ul>
+    <li><b>Cancelamento</b>
+      <ul>
+        <li>Está dentro dos 7 dias?</li>
+        <li>→ Sim: Cancelar e estornar 100%. (Ofereça retenção antes!)</li>
+        <li>→ Não: Calcule multa de 20% (valor total, sem descontos, limitada a 80% do valor pago). Siga política de contrato recorrente/não recorrente.</li>
+        <li>Segunda contratação: sem multa até 7 dias.</li>
+      </ul>
+    </li>
+    <li><b>Renovação</b>
+      <ul>
+        <li>Automática: cartão válido? Falha gera caso para retenção ativa.</li>
+        <li>Antecipada: valide ofertas e bônus conforme meses escolhidos.</li>
+      </ul>
+    </li>
+    <li><b>Upgrade/Downgrade/Migração</b>
+      <ul>
+        <li>Verifique regras específicas. Sempre manter progresso do aluno.</li>
+      </ul>
+    </li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">2. O aluno tem pendências financeiras?</span></summary>
+  <ul>
+    <li>Ofereça parcelamento, ajuste de vencimento, ou reestruturação conforme regras.</li>
+    <li>Negocie quitação e explique regras de crédito.</li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">3. Classifique corretamente no sistema</span></summary>
+  <ul>
+    <li>Utilize árvore de motivos.</li>
+    <li>Envie pesquisa de satisfação ao finalizar.</li>
+  </ul>
+</details>
+`,
+    scripts: [
+      { summary: "Cancelamento até 7 dias", content: "Você está dentro do prazo legal de arrependimento, então podemos cancelar seu curso e estornar o valor integral, conforme nossa política. Antes de seguir, posso te apresentar todos os benefícios e alternativas que podem te ajudar na sua jornada?" },
+      { summary: "Cancelamento após 7 dias", content: "Após 7 dias, a política prevê multa de 20% sobre o valor total do contrato, sem descontos, limitada a 80% do valor pago. Quer que eu simule o valor? Também posso apresentar opções como crédito, migração de curso ou valores promocionais." },
+      { summary: "Dificuldade financeira", content: "Entendo o momento e estou aqui para ajudar! Podemos analisar juntos alternativas como desconto, meses bônus, ajuste de plano ou parcelamento para facilitar sua permanência." },
+      { summary: "Upgrade/Downgrade", content: "Você pode ajustar sua assinatura, migrar de plano ou manter o valor já investido. Tudo isso sem perder o progresso dos seus estudos." },
+      { summary: "Inadimplência", content: "Vamos renegociar os débitos e encontrar uma alternativa para regularizar sua situação e garantir seu acesso. Posso gerar um boleto ou link de pagamento para você." }
+    ],
+    sla: [
+      ["Setor", "Prazo (dias úteis)"],
+      ["Pedagógico", "2"],
+      ["Marketing", "1-2"],
+      ["Jurídico", "2"],
+      ["Secretaria", "2"],
+      ["Gran Questões", "2"],
+      ["Produção Educacional", "1-2"],
+    ],
+    faq: [
+      { q: "Quando posso usar créditos?", a: "Créditos ficam disponíveis por 2 anos no portal do aluno e só podem ser usados em produtos da mesma unidade de negócio (BU)." },
+      { q: "Contrato cancelado pode ser reativado?", a: "Não. É necessário realizar uma nova compra." },
+      { q: "Como funciona upgrade/downgrade?", a: "Permite migrar de plano ou ajustar assinatura, mantendo progresso e aproveitando o valor já investido." },
+      { q: "O que acontece se o pagamento do upgrade/downgrade não aprovar?", a: "Você poderá tentar novamente ou será aberto um caso para a área de retenção." },
+      { q: "Posso pedir dados de cartão ao aluno?", a: "Jamais! Toda alteração de pagamento é feita pelo aluno, via portal." }
+    ]
+  },
+  ead: {
+    name: "Ensino Superior EAD",
+    policyCards: [
+      { title: "Rematrícula & Renovação", items: [
+        "<b>Rematrícula automática:</b> ao fim do período letivo, desde que não haja pendências.",
+        "Ambiente de rematrícula abre 30 dias antes do fim do período. Permite alteração de pagamento.",
+        "Adimplentes: rematrícula liberada. Inadimplentes ou com documentação pendente: bloqueada até regularização.",
+        "Sucesso gera pontuação no Gran Clube."
+      ]},
+      { title: "Retenção, Cancelamento & Trancamento", items: [
+        "Canais: chat, formulário, WhatsApp, telefone, click to call.",
+        "Solicitações devem ser registradas como casos no sistema. Duplicidade é mesclada automaticamente.",
+        "Cancelamento: multa de 20% do valor total do contrato (sem descontos), limitada a 80% do valor contratado.",
+        "Trancamento: só após 180 dias de contrato. Prazo máximo: 4 semestres (Bacharel/Licenciatura) ou 2 semestres (Tecnólogo).",
+        "Após cancelamento ou trancamento, contrato não pode ser reativado."
+      ]},
+      { title: "Crédito & Estorno", items: [
+        "Ofertas: valor atual, mensalidade social, descontos vigentes, crédito.",
+        "Créditos disponíveis por 2 anos, apenas para a mesma BU.",
+        "Jamais solicitar dados de cartão!"
+      ]}
+    ],
+    aviso: "⚠️ Sempre confira situação financeira e documental do aluno antes de prosseguir com rematrícula ou cancelamento.",
+    quickLinks: [
+      { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
+      { text: "Regulamento EAD", href: "#", target: "_blank"},
+      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+    ],
+    decisionTree: `
+<details><summary><span class="flow-step">1. Tipo de solicitação?</span></summary>
+  <ul>
+    <li><b>Rematrícula:</b>
+      <ul>
+        <li>Adimplente e sem pendências? Libere no AVA.</li>
+        <li>Inadimplente/documentação pendente? Oriente sobre regularização e bloqueie rematrícula até regularizar.</li>
+      </ul>
+    </li>
+    <li><b>Cancelamento:</b>
+      <ul>
+        <li>Até 7 dias? Cancela e estorna integralmente.</li>
+        <li>Após 7 dias? Aplica multa de 20% do valor total sem descontos, limitada a 80% do valor contratado.</li>
+      </ul>
+    </li>
+    <li><b>Trancamento:</b>
+      <ul>
+        <li>Permitido após 180 dias. Prazo máximo: 4 semestres (Bacharel/Licenciatura), 2 semestres (Tecnólogo).</li>
+      </ul>
+    </li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">2. Oferta de retenção?</span></summary>
+  <ul>
+    <li>Verifique e aplique condições possíveis: mensalidade social, desconto, crédito, renegociação.</li>
+    <li>Jamais solicite dados de cartão: operação sempre via portal.</li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">3. Finalize, classifique e envie pesquisa de satisfação</span></summary>
+</details>
+`,
+    scripts: [
+      { summary: "Rematrícula bloqueada", content: "Sua rematrícula está bloqueada devido a pendências financeiras ou documentação. Assim que regularizar, o acesso será liberado. Precisa de ajuda para gerar boleto ou enviar documentos?" },
+      { summary: "Cancelamento até 7 dias", content: "Seu pedido está dentro do prazo legal, então não haverá multa. Podemos seguir com o cancelamento, ou se quiser, posso apresentar benefícios que talvez você não tenha explorado ainda!" },
+      { summary: "Cancelamento após 7 dias", content: "Como o prazo de 7 dias já foi ultrapassado, a política prevê multa de 20% sobre o valor total do contrato (sem descontos), limitada a 80% do valor contratado. Posso calcular para você ou apresentar outras opções para facilitar sua permanência." },
+      { summary: "Trancamento de matrícula", content: "O trancamento é permitido após 180 dias de início do contrato e tem limite de semestres conforme seu curso. Isso suspende suas mensalidades e acesso à biblioteca. Para destrancar, é só nos procurar." },
+      { summary: "Inadimplência", content: "Podemos parcelar ou renegociar seus débitos para facilitar a regularização. Prefere gerar boleto, link de pagamento ou conversar sobre alternativas?" }
+    ],
+    sla: [
+      ["Setor", "Prazo (dias úteis)"],
+      ["Pedagógico", "3"],
+      ["Marketing", "3"],
+      ["Jurídico", "7"],
+      ["Secretaria Acadêmica", "3"],
+      ["Biblioteca", "3"],
+      ["Gran Questões", "3"],
+      ["Produção Educacional", "3"],
+    ],
+    faq: [
+      { q: "Quando posso usar créditos?", a: "Créditos ficam disponíveis por 2 anos e só podem ser usados em produtos da mesma BU." },
+      { q: "Contrato cancelado/trancado pode ser reativado?", a: "Não. É necessário novo processo ou destrancamento, conforme regras." },
+      { q: "Quais as regras de trancamento?", a: "Só permitido após 180 dias. Prazo máximo: 4 semestres para bacharel/licenciatura, 2 para tecnólogo." },
+      { q: "Posso pedir dados de cartão?", a: "Nunca! Alteração sempre via portal do aluno." },
+      { q: "Como é calculada a multa de cancelamento?", a: "20% do valor total do contrato, sem descontos, limitada a 80% do valor contratado." }
+    ]
+  },
+  presencial: {
+    name: "Ensino Superior Presencial",
+    policyCards: [
+      { title: "Cancelamento & Multa", items: [
+        "<b>Multa:</b> 20% do valor das parcelas a vencer do semestre vigente para adimplentes.",
+        "Inadimplentes: 20% + parcelas vencidas (com juros/multa).",
+        "Solicitação presencial deve ser registrada no sistema TOTVS e comunicada à coordenação pelo Slack."
+      ]},
+      { title: "Atendimento & Fluxo", items: [
+        "Atendimento receptivo: chat, formulário, WhatsApp ou presencial.",
+        "Solicitações presenciais ou recebidas por outras áreas: sempre redirecionar ao formulário ou WhatsApp oficial.",
+        "Registrar protocolo no TOTVS, informar diretoria/coordenadores via Slack, e classificar corretamente no sistema."
+      ]},
+      { title: "Trancamento & Reativação", items: [
+        "Trancamento: permitido só a partir do 2º semestre, conforme calendário acadêmico.",
+        "Após cancelamento, não há reativação. Novo processo é necessário.",
+        "Trancamento: suspende mensalidades, acesso à biblioteca e conteúdo acadêmico."
+      ]}
+    ],
+    aviso: "⚠️ No presencial, sempre registre protocolo no TOTVS e comunique coordenadores pelo Slack #retenção-es-presencial.",
+    quickLinks: [
+      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+      { text: "Canal Slack #retenção-es-presencial", href: "https://mudarvidas.enterprise.slack.com/archives/C08J101D2MV", target: "_blank"}
+    ],
+    decisionTree: `
+<details><summary><span class="flow-step">1. Solicitação presencial ou via outros canais?</span></summary>
+  <ul>
+    <li>Direcione para formulário ou WhatsApp oficial. <br>
+        Registre protocolo no TOTVS, informe coordenação e siga fluxos oficiais.</li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">2. Cancelamento</span></summary>
+  <ul>
+    <li>Adimplente? Multa de 20% sobre parcelas a vencer.</li>
+    <li>Inadimplente? Multa de 20% + parcelas vencidas com juros e multa.</li>
+    <li>Envie link/boleto via WhatsApp ou e-mail durante atendimento.</li>
+    <li>Finalize, classifique e envie pesquisa de satisfação.</li>
+  </ul>
+</details>
+<details><summary><span class="flow-step">3. Trancamento</span></summary>
+  <ul>
+    <li>Permitido apenas a partir do 2º semestre. <br> Suspende mensalidades, acesso à biblioteca e conteúdo acadêmico.</li>
+    <li>Registrar protocolo, informar coordenação e orientar aluno sobre regras de reativação.</li>
+  </ul>
+</details>
+`,
+    scripts: [
+      { summary: "Cancelamento presencial", content: "Vamos registrar sua solicitação e calcular a multa de 20% das parcelas a vencer deste semestre. Se houver parcelas em atraso, elas serão somadas com juros e multa. Link/boleto será enviado durante o atendimento. Após o cancelamento, será necessário novo processo para retorno." },
+      { summary: "Trancamento", content: "O trancamento presencial só é permitido a partir do 2º semestre, conforme calendário. Mensalidades são suspensas, assim como o acesso à biblioteca e materiais. Para destrancar ou retornar, é preciso protocolar nova solicitação." }
+    ],
+    sla: [
+      ["Setor", "Prazo (dias úteis)"],
+      ["Secretaria Acadêmica", "3"],
+      ["Pedagógico", "3"],
+      ["Jurídico", "7"],
+    ],
+    faq: [
+      { q: "Como é calculada a multa?", a: "20% das parcelas a vencer (adimplente) ou 20% + parcelas vencidas com juros/multa (inadimplente)." },
+      { q: "Posso reativar o contrato depois de cancelado?", a: "Não. É necessário novo processo seletivo/contrato." },
+      { q: "Quando posso pedir trancamento?", a: "Apenas a partir do 2º semestre, conforme calendário acadêmico." },
+      { q: "O que devo fazer após solicitação presencial?", a: "Registrar protocolo no TOTVS, informar coordenação via Slack, e classificar no sistema." }
+    ]
+  }
+};
 
-    // Scroll active link
-    const navLinks = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('section');
-    function activateLinkOnScroll() {
-      let index = sections.length;
-      while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
-      navLinks.forEach(link => link.classList.remove('active'));
-      navLinks[index].classList.add('active');
-    }
-    activateLinkOnScroll();
-    window.addEventListener('scroll', activateLinkOnScroll);
+// =============== RENDERIZAÇÃO ================
+function renderSegment(segmentKey) {
+  const seg = segments[segmentKey];
 
-    // Expand/Collapse all
-    document.getElementById('expandAll').onclick = function() {
-      document.querySelectorAll('#scriptsList details').forEach(d => d.open = true);
-    };
-    document.getElementById('collapseAll').onclick = function() {
-      document.querySelectorAll('#scriptsList details').forEach(d => d.open = false);
-    };
+  // Cards de política
+  document.getElementById('policyCards').innerHTML = seg.policyCards.map(card => `
+    <div class="policy-card">
+      <h3>${card.title}</h3>
+      <ul>${card.items.map(i => `<li>${i}</li>`).join('')}</ul>
+    </div>
+  `).join('');
 
-    // Categorias de scripts
-    document.querySelectorAll('.script-cats button').forEach(btn => {
-      btn.onclick = function() {
-        document.querySelectorAll('.script-cats button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        let cat = btn.getAttribute('data-cat');
-        document.querySelectorAll('#scriptsList details').forEach(d => {
-          d.style.display = (cat === 'todos' || d.getAttribute('data-cat') === cat) ? '' : 'none';
-        });
-      }
-    });
+  // Aviso de destaque
+  document.getElementById('aviso').innerHTML = seg.aviso;
 
-    // Busca real nos scripts
-    const searchInput = document.getElementById('searchInput');
-    const scriptsList = document.getElementById('scriptsList');
-    const searchFeedback = document.getElementById('searchFeedback');
-    searchInput.addEventListener('input', function(){
-      let val = this.value.toLowerCase();
-      let found = 0;
-      document.querySelectorAll('#scriptsList details').forEach(d => {
-        const text = d.innerText.toLowerCase();
-        if(val && text.indexOf(val) === -1){
-          d.style.display = 'none';
-        } else {
-          d.style.display = '';
-          if(val) found++;
-        }
+  // Links úteis
+  document.getElementById('quickLinks').innerHTML = seg.quickLinks.map(l =>
+    `<a href="${l.href}" target="${l.target || ''}" rel="noopener">${l.text}</a>`).join('');
+
+  // Árvore de decisão
+  document.getElementById('decisionTree').innerHTML = `
+    <h2>Árvore de Decisão — ${seg.name}</h2>
+    ${seg.decisionTree}
+  `;
+
+  // Scripts de atendimento
+  document.getElementById('scriptSection').innerHTML = `
+    <h2>Scripts de Atendimento</h2>
+    ${seg.scripts.map(s =>
+      `<details><summary>${s.summary}</summary><p>${s.content}</p></details>`
+    ).join('')}
+  `;
+
+  // SLAs/canais
+  document.getElementById('slaTable').innerHTML = `
+    <h2>SLAs e Canais Oficiais</h2>
+    <table>
+      <tr>${seg.sla[0].map(t => `<th>${t}</th>`).join('')}</tr>
+      ${seg.sla.slice(1).map(row => `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`).join('')}
+    </table>
+    <p style="margin: 0.5rem 0 0 0.2rem; font-size:0.97rem; color:#555;">
+      Priorize sempre o canal oficial da política vigente. Consulte prazos antes de prometer retorno.
+    </p>
+  `;
+
+  // FAQ
+  document.getElementById('faqSection').innerHTML = `
+    <h2>Perguntas Frequentes (FAQ)</h2>
+    <div class="faq-list">
+      ${seg.faq.map(f =>
+        `<details><summary>${f.q}</summary><p>${f.a}</p></details>`
+      ).join('')}
+    </div>
+  `;
+
+  // Objeções (padrão, não muda por segmento para não duplicar no código, mas pode personalizar se desejar)
+  document.getElementById('objectionBreaker').innerHTML = `
+    <h2>Quebra de Objeções — Como Reter o Aluno</h2>
+    <details><summary><b>“Não estou usando o curso/plataforma”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Entendo que a rotina pode ser corrida, mas sua vaga, suporte e acesso a conteúdos exclusivos ficaram reservados para você desde o início. Posso te mostrar como explorar melhor a plataforma e ajustar seu cronograma de estudo ao seu tempo?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Não gostei do material/aulas”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Lamento por não ter atendido suas expectativas, mas nosso conteúdo é revisado por especialistas e focado na aprovação. Podemos analisar juntos suas dificuldades e indicar trilhas, professores ou materiais mais adequados ao seu perfil?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Estou sem tempo para estudar”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> É normal que a rotina aperte, mas nosso curso é flexível! Posso apresentar planos de estudo personalizados, microaulas, revisões rápidas ou módulos que podem ser acessados no seu ritmo, sem pressa.</li>
+      </ul>
+    </details>
+    <details><summary><b>“Motivos financeiros”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> O momento realmente pode pesar, mas há alternativas! Temos ofertas especiais, crédito, meses bônus e até parcelamento para facilitar. Que tal revisarmos juntos as opções sem prejudicar seu sonho?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Reprovei e desanimei”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> A reprovação faz parte da jornada de qualquer aprovado. Podemos analisar juntos o que faltou, rever seu plano de estudo e adaptar seu caminho para a próxima tentativa. Estamos aqui para apoiar em todas as etapas.</li>
+      </ul>
+    </details>
+    <details><summary><b>“Vou mudar de foco/objetivo”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Mudanças de planos fazem parte! Temos cursos e módulos alinhados a vários objetivos. Podemos migrar seu plano ou transferir créditos para um novo curso, se for do seu interesse.</li>
+      </ul>
+    </details>
+    <details><summary><b>“A plataforma não funciona/bloqueou”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Lamento pelo transtorno! Nosso suporte está pronto para resolver qualquer problema. Posso abrir uma solicitação técnica para você agora, ou se preferir, te acompanhar até a solução?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Não sabia da renovação/cobrança automática”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Entendo que isso pode gerar surpresa, mas a renovação é uma facilidade para que você não perca acesso nem ofertas exclusivas. Posso explicar as condições e encontrar juntos a melhor solução para este momento?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Achei caro/não cabe no orçamento”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Compreendo a preocupação! O valor inclui todos os recursos, suporte, trilhas de estudo e atualizações constantes. Posso avaliar condições promocionais, descontos ou flexibilizar pagamentos para você?</li>
+      </ul>
+    </details>
+    <details><summary><b>“Já passei no concurso / consegui vaga”</b></summary>
+      <ul>
+        <li><b>Argumento:</b> Parabéns pela conquista! Se quiser, posso apresentar planos avançados para novas etapas ou concursos, ou explicar como utilizar seus créditos/remanescentes em outros cursos Gran.</li>
+      </ul>
+    </details>
+  `;
+}
+
+// ===== TROCA DE SEGMENTO =====
+document.querySelectorAll('.segment-selector button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.segment-selector button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderSegment(btn.getAttribute('data-segment'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+renderSegment('prep');
+
+// ===== MENU RÁPIDO =====
+document.querySelectorAll('.quick-menu a').forEach(link => {
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelectorAll('.quick-menu a').forEach(a => a.classList.remove('active'));
+    this.classList.add('active');
+    const id = this.getAttribute('href');
+    const target = document.querySelector(id);
+    if (target) {
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY - 40,
+        behavior: 'smooth'
       });
-      if(val && found === 0){
-        searchFeedback.textContent = "Nenhum script encontrado para: " + val;
-      } else {
-        searchFeedback.textContent = "";
-      }
-    });
+    }
+  });
+});
 
-    // Lazy load do Google Forms
-    document.getElementById('loadForm').onclick = function(){
-      document.getElementById('formContainer').innerHTML = `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>`;
-    };
+// ====== BUSCA GLOBAL ======
+function highlight(text, term) {
+  if (!term) return text;
+  return text.replace(new RegExp(`(${term})`, "gi"), '<mark>$1</mark>');
+}
+document.getElementById('searchInput').addEventListener('input', function() {
+  const val = this.value.trim().toLowerCase();
+  let found = 0;
 
-    // Acessibilidade: permite abrir/fechar com Enter
-    document.querySelectorAll('summary').forEach(s => {
-      s.setAttribute('tabindex','0');
-    });
+  // Cards
+  document.querySelectorAll('.policy-card').forEach(card => {
+    card.style.display = (!val || card.innerText.toLowerCase().includes(val)) ? "" : "none";
+    if (card.style.display !== "none") found++;
+    card.innerHTML = highlight(card.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+  });
+
+  // Scripts
+  document.querySelectorAll('.script-section details').forEach(d => {
+    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+    if (d.style.display !== "none") found++;
+    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+  });
+
+  // Objeções
+  document.querySelectorAll('.objection-breaker details').forEach(d => {
+    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+    if (d.style.display !== "none") found++;
+    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+  });
+
+  // FAQ
+  document.querySelectorAll('.faq-list details').forEach(d => {
+    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+    if (d.style.display !== "none") found++;
+    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+  });
+
+  // Decision tree
+  document.querySelectorAll('.decision-tree details').forEach(d => {
+    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+    if (d.style.display !== "none") found++;
+    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+  });
+
+  document.getElementById('searchFeedback').textContent = val && found === 0
+    ? "Nenhum resultado encontrado para: " + val
+    : "";
+});
+
+// ===== FORMULÁRIO DE SUGESTÃO LAZY LOAD =====
+document.getElementById('loadFormBtn').onclick = function(){
+  document.getElementById('formContainer').innerHTML =
+    `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>`;
+  this.style.display = "none";
+};
   </script>
 </body>
 </html>
