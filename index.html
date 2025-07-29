@@ -7,9 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -22,6 +21,7 @@
       text-align: center;
       padding: 1.5rem;
     }
+    /* Sticky nav */
     nav {
       background: #e4e6f2;
       display: flex;
@@ -29,46 +29,126 @@
       padding: 1rem;
       flex-wrap: wrap;
       gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: box-shadow .2s;
     }
+    nav.scrolled { box-shadow: 0 2px 8px rgba(13, 19, 76, 0.13);}
     nav a {
       text-decoration: none;
       color: #0d134c;
       font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background .2s, color .2s;
+    }
+    nav a.active,
+    nav a:focus {
+      background: #0d134c;
+      color: #fff;
+      border-radius: 6px;
+      outline: none;
+    }
+    /* Hamburger menu for mobile */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      z-index: 2000;
+      color: #0d134c;
+    }
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem 0.5rem 1rem 3.5rem;
+      }
+      nav.closed { display: none; }
+      .nav-toggle { display: block; }
     }
     section {
       max-width: 900px;
       margin: 2rem auto;
       background: white;
       padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
     }
-    h2 {
-      color: #0d134c;
-      margin-top: 0;
-    }
+    h2 { color: #0d134c; margin-top: 0; }
     details {
       background: #f0f0f0;
       padding: 1rem;
       border-radius: 6px;
       margin-bottom: 1rem;
+      border: 1px solid #e4e6f2;
+      transition: box-shadow .2s;
+    }
+    details[open] {
+      box-shadow: 0 1px 4px #0d134c22;
+      background: #e9f0fa;
     }
     summary {
       font-weight: bold;
       cursor: pointer;
+      font-size: 1.08rem;
+      outline: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .subnav {
-      margin: 1rem 0;
+    summary:focus { outline: 2px solid #0d134c; }
+    .category-label {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      background: #d9e1f2;
+      color: #0d134c;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .script-cats {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      margin: 0 0 1rem 0;
     }
-    .subnav a {
-      background: #d9e1f2;
-      padding: 0.4rem 0.8rem;
+    .script-cats button {
+      background: #f5f7fa;
+      border: 1px solid #d9e1f2;
+      color: #0d134c;
       border-radius: 4px;
-      font-size: 0.9rem;
+      font-size: 0.98rem;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      transition: background .2s;
     }
+    .script-cats button.active {
+      background: #0d134c;
+      color: #fff;
+    }
+    .expand-collapse {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 0.7rem;
+    }
+    .expand-collapse button {
+      background: #e4e6f2;
+      color: #0d134c;
+      border: none;
+      padding: 0.35rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .expand-collapse button:hover { background: #d9e1f2; }
     .searchbar {
       text-align: center;
       margin: 1rem auto;
@@ -82,59 +162,154 @@
       border-radius: 6px;
       font-size: 1rem;
     }
+    .search-feedback {
+      color: #e25c3f;
+      font-size: 1.02rem;
+      margin-top: 0.5rem;
+    }
     iframe {
       width: 100%;
       border: none;
+      min-height: 400px;
+    }
+    /* Mobile improvements */
+    @media (max-width: 600px) {
+      section { padding: 1rem; margin: 1rem 0.3rem; }
+      .searchbar input { width: 95%; font-size: 1.03rem; }
+      .expand-collapse { flex-direction: column; gap: 0.4rem; }
+    }
+    /* Acessibilidade */
+    .sr-only {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
-
+  <button class="nav-toggle" aria-label="Abrir menu" id="navToggle">&#9776;</button>
   <header>
     <h1>Permanência do Aluno</h1>
     <p>Conectando propósito, cultura e impacto em cada atendimento</p>
   </header>
 
-  <nav>
+  <nav id="mainNav" aria-label="Navegação principal">
     <a href="#inicio">Início</a>
-    <a href="#scripts">Sugestão de Scripts</a>
+    <a href="#scripts">Scripts</a>
     <a href="#arvore">Árvore de Decisão</a>
-    <a href="#sugestao">De sua Sugestão</a>
+    <a href="#sugestao">Sugestão</a>
   </nav>
 
   <div class="searchbar">
-    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" onkeyup="searchPage()" />
+    <label for="searchInput" class="sr-only">Buscar scripts</label>
+    <input id="searchInput" type="text" placeholder="Digite uma palavra-chave…" autocomplete="off" />
+    <div class="search-feedback" id="searchFeedback" aria-live="polite"></div>
   </div>
 
-  <section id="inicio">
+  <section id="inicio" tabindex="0">
     <h2>Boas-vindas</h2>
     <p>Este espaço foi criado para guiar sua atuação em atendimentos de retenção, com foco em empatia, alinhamento às políticas e cultura do Gran.</p>
     <p><strong>Frase-chave:</strong> “Quando nos desconectamos da experiência do aluno, a retenção vira número e não propósito. Nosso papel é transformar cada contato em um ponto de conexão verdadeira.”</p>
   </section>
 
-  <section id="scripts">
+  <section id="scripts" tabindex="0">
     <h2>Sugestão de Scripts</h2>
-    <details><summary>🧩 Argumentação Genérica</summary><p>Esse valor que compartilhei já contempla as melhores condições vigentes, mas entendo que o momento de cada aluno é diferente. Se quiser, posso verificar com meu coordenador se existe alguma outra possibilidade de negociação.</p></details>
-    <details><summary>👨‍👩‍👧‍👦 Argumentação com Pais</summary><p>Entendo que toda escolha de investimento na educação envolve a família. O fato de ele estar buscando esse caminho já mostra maturidade e foco. Nossa missão aqui é oferecer todo o suporte para que esse investimento traga retorno real.</p></details>
-    <details><summary>⏳ Cancelamento por Falta de Tempo</summary><p>Entendo como pode ser difícil conciliar os estudos com a rotina. Se quiser, posso te mostrar alternativas mais flexíveis ou benefícios que podem facilitar esse momento sem você precisar abrir mão do seu objetivo.</p></details>
-    <details><summary>📄 Contrato Recorrente</summary><p>No plano com fidelidade, as condições de cancelamento incluem a aplicação da multa contratual, conforme combinado no ato da compra. Posso te mostrar como esse valor é calculado e se há alguma alternativa viável para você continuar com a gente?</p></details>
-    <details><summary>📅 Dentro do prazo de 7 dias</summary><p>Você está dentro do prazo de arrependimento garantido por lei, e claro que podemos seguir com seu pedido. Mas antes disso, posso te apresentar tudo que o Gran oferece? Nosso conteúdo é vasto, prático e pensado para transformar sua rotina em direção à aprovação.</p></details>
-    <details><summary>💰 Dificuldade Financeira</summary><p>Sei que o momento financeiro pode pesar, e por isso podemos juntos revisar seu plano. Nosso objetivo é que a parte financeira não seja um impeditivo para o seu sonho.</p></details>
-    <details><summary>🧭 Incentivo à Permanência</summary><p>Você já avançou tanto nessa jornada… e sabemos que obstáculos fazem parte. Que tal dar um passo de cada vez, com o apoio do nosso time?</p></details>
-    <details><summary>💻 Insatisfação com a Plataforma</summary><p>Sinto muito que sua experiência não tenha sido positiva até agora. Posso te mostrar como tirar mais proveito do conteúdo e recursos?</p></details>
-    <details><summary>🔥 Motivacional</summary><p>Sei que manter a motivação nem sempre é fácil, mas você chegou até aqui por mérito próprio. Estou aqui para te ajudar a seguir em frente, com leveza e no seu tempo.</p></details>
-    <details><summary>⚖️ Pós Prazo Legal</summary><p>Mesmo após o prazo legal de 7 dias, estamos aqui para entender sua situação. Nosso papel é te apoiar e buscar caminhos viáveis para sua permanência — posso te apresentar algumas possibilidades?</p></details>
-    <details><summary>🔁 Segundo Contrato</summary><p>Em contratos renovados, a política de cancelamento é diferente, e o prazo de 7 dias não se aplica. Ainda assim, posso te apresentar o que está previsto e verificar juntos alguma solução viável.</p></details>
-    <details><summary>🆙 Cancelamento por Upgrade</summary><p>O upgrade é uma funcionalidade automática para garantir que você tenha sempre o melhor plano disponível. Mas entendo que possa ter gerado dúvidas — posso revisar com você as condições, valores e ver se há um caminho que faça mais sentido para o seu momento?</p></details>
-    <details><summary>📚 Cancelamento de Curso Avulso</summary><p>Nosso curso avulso tem regras específicas: após 7 dias, o valor não é estornado, mas é convertido integralmente em crédito para você usar em outro curso. Posso te mostrar como aplicar esse crédito da melhor forma?</p></details>
-    <details><summary>🔁 Cancelamento por Renovação Automática</summary><p>Entendo que a renovação automática possa ter passado despercebida. A gente ativa essa função para garantir sua continuidade sem interrupções, mas estou aqui para te explicar tudo e encontrar a melhor solução — inclusive, podemos avaliar a permanência com condições ajustadas.</p></details>
-    <details><summary>🙋‍♂️ Cancelamento por “Não Usei”</summary><p>Mesmo que você não tenha acessado o curso, a vaga, suporte e conteúdo ficam reservados para você desde a ativação. Mas estou aqui para entender seu cenário e, se for o caso, ajustar algo que facilite sua permanência.</p></details>
-    <details><summary>📉 Cancelamento por Reprovação</summary><p>Sei como a reprovação pode abalar a confiança, mas ela também pode ser o começo de uma nova estratégia. Podemos revisar seu plano de estudos juntos? O Gran está aqui para te apoiar em cada tentativa.</p></details>
-    <details><summary>🎯 Cancelamento por Mudança de Foco</summary><p>Se sua meta mudou, que bom que você se escuta e se adapta! Podemos ver se temos algo que converse melhor com sua nova fase — o conhecimento que você já acessou também faz parte da sua bagagem.</p></details>
-    <details><summary>🎁 Oferta de Reativação com Voucher</summary><p>Sabemos que às vezes é preciso dar uma pausa — por isso, temos condições especiais para você retomar sua jornada com ainda mais suporte. Posso te mostrar um benefício exclusivo?</p></details>
-    <details><summary>🔄 Migração para Outro Curso</summary><p>Se o curso atual não está alinhado ao que você precisa, podemos ver juntos a possibilidade de migrar para outro. Assim, você continua avançando sem precisar recomeçar do zero.</p></details>
+    <div class="script-cats" aria-label="Filtrar scripts por categoria">
+      <button type="button" class="active" data-cat="todos">Todos</button>
+      <button type="button" data-cat="cancelamento">Cancelamento</button>
+      <button type="button" data-cat="dificuldade">Dificuldade/Objeções</button>
+      <button type="button" data-cat="financeiro">Financeiro</button>
+      <button type="button" data-cat="motivacional">Motivacional</button>
+      <button type="button" data-cat="tecnico">Técnico/Plataforma</button>
+    </div>
+    <div class="expand-collapse">
+      <button type="button" id="expandAll">Expandir todos</button>
+      <button type="button" id="collapseAll">Recolher todos</button>
+    </div>
+    <div id="scriptsList">
+      <!-- Cada script agora tem um data-cat para filtragem -->
+      <details data-cat="cancelamento"><summary>⏳ Cancelamento por Falta de Tempo</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Entendo como pode ser difícil conciliar os estudos com a rotina. Se quiser, posso te mostrar alternativas mais flexíveis ou benefícios que podem facilitar esse momento sem você precisar abrir mão do seu objetivo.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>📅 Dentro do prazo de 7 dias</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Você está dentro do prazo de arrependimento garantido por lei, e claro que podemos seguir com seu pedido. Mas antes disso, posso te apresentar tudo que o Gran oferece? Nosso conteúdo é vasto, prático e pensado para transformar sua rotina em direção à aprovação.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>🔁 Cancelamento por Renovação Automática</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Entendo que a renovação automática possa ter passado despercebida. A gente ativa essa função para garantir sua continuidade sem interrupções, mas estou aqui para te explicar tudo e encontrar a melhor solução — inclusive, podemos avaliar a permanência com condições ajustadas.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>🆙 Cancelamento por Upgrade</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>O upgrade é uma funcionalidade automática para garantir que você tenha sempre o melhor plano disponível. Mas entendo que possa ter gerado dúvidas — posso revisar com você as condições, valores e ver se há um caminho que faça mais sentido para o seu momento?</p>
+      </details>
+      <details data-cat="cancelamento"><summary>📚 Cancelamento de Curso Avulso</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Nosso curso avulso tem regras específicas: após 7 dias, o valor não é estornado, mas é convertido integralmente em crédito para você usar em outro curso. Posso te mostrar como aplicar esse crédito da melhor forma?</p>
+      </details>
+      <details data-cat="cancelamento"><summary>🙋‍♂️ Cancelamento por “Não Usei”</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Mesmo que você não tenha acessado o curso, a vaga, suporte e conteúdo ficam reservados para você desde a ativação. Mas estou aqui para entender seu cenário e, se for o caso, ajustar algo que facilite sua permanência.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>📉 Cancelamento por Reprovação</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Sei como a reprovação pode abalar a confiança, mas ela também pode ser o começo de uma nova estratégia. Podemos revisar seu plano de estudos juntos? O Gran está aqui para te apoiar em cada tentativa.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>🎯 Cancelamento por Mudança de Foco</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Se sua meta mudou, que bom que você se escuta e se adapta! Podemos ver se temos algo que converse melhor com sua nova fase — o conhecimento que você já acessou também faz parte da sua bagagem.</p>
+      </details>
+      <details data-cat="dificuldade"><summary>🧩 Argumentação Genérica</summary>
+        <span class="category-label">Dificuldade/Objeções</span>
+        <p>Esse valor que compartilhei já contempla as melhores condições vigentes, mas entendo que o momento de cada aluno é diferente. Se quiser, posso verificar com meu coordenador se existe alguma outra possibilidade de negociação.</p>
+      </details>
+      <details data-cat="dificuldade"><summary>👨‍👩‍👧‍👦 Argumentação com Pais</summary>
+        <span class="category-label">Dificuldade/Objeções</span>
+        <p>Entendo que toda escolha de investimento na educação envolve a família. O fato de ele estar buscando esse caminho já mostra maturidade e foco. Nossa missão aqui é oferecer todo o suporte para que esse investimento traga retorno real.</p>
+      </details>
+      <details data-cat="financeiro"><summary>💰 Dificuldade Financeira</summary>
+        <span class="category-label">Financeiro</span>
+        <p>Sei que o momento financeiro pode pesar, e por isso podemos juntos revisar seu plano. Nosso objetivo é que a parte financeira não seja um impeditivo para o seu sonho.</p>
+      </details>
+      <details data-cat="motivacional"><summary>🧭 Incentivo à Permanência</summary>
+        <span class="category-label">Motivacional</span>
+        <p>Você já avançou tanto nessa jornada… e sabemos que obstáculos fazem parte. Que tal dar um passo de cada vez, com o apoio do nosso time?</p>
+      </details>
+      <details data-cat="tecnico"><summary>💻 Insatisfação com a Plataforma</summary>
+        <span class="category-label">Técnico/Plataforma</span>
+        <p>Sinto muito que sua experiência não tenha sido positiva até agora. Posso te mostrar como tirar mais proveito do conteúdo e recursos?</p>
+      </details>
+      <details data-cat="motivacional"><summary>🔥 Motivacional</summary>
+        <span class="category-label">Motivacional</span>
+        <p>Sei que manter a motivação nem sempre é fácil, mas você chegou até aqui por mérito próprio. Estou aqui para te ajudar a seguir em frente, com leveza e no seu tempo.</p>
+      </details>
+      <details data-cat="cancelamento"><summary>⚖️ Pós Prazo Legal</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Mesmo após o prazo legal de 7 dias, estamos aqui para entender sua situação. Nosso papel é te apoiar e buscar caminhos viáveis para sua permanência — posso te apresentar algumas possibilidades?</p>
+      </details>
+      <details data-cat="cancelamento"><summary>🔁 Segundo Contrato</summary>
+        <span class="category-label">Cancelamento</span>
+        <p>Em contratos renovados, a política de cancelamento é diferente, e o prazo de 7 dias não se aplica. Ainda assim, posso te apresentar o que está previsto e verificar juntos alguma solução viável.</p>
+      </details>
+      <details data-cat="financeiro"><summary>📄 Contrato Recorrente</summary>
+        <span class="category-label">Financeiro</span>
+        <p>No plano com fidelidade, as condições de cancelamento incluem a aplicação da multa contratual, conforme combinado no ato da compra. Posso te mostrar como esse valor é calculado e se há alguma alternativa viável para você continuar com a gente?</p>
+      </details>
+      <details data-cat="motivacional"><summary>🎁 Oferta de Reativação com Voucher</summary>
+        <span class="category-label">Motivacional</span>
+        <p>Sabemos que às vezes é preciso dar uma pausa — por isso, temos condições especiais para você retomar sua jornada com ainda mais suporte. Posso te mostrar um benefício exclusivo?</p>
+      </details>
+      <details data-cat="motivacional"><summary>🔄 Migração para Outro Curso</summary>
+        <span class="category-label">Motivacional</span>
+        <p>Se o curso atual não está alinhado ao que você precisa, podemos ver juntos a possibilidade de migrar para outro. Assim, você continua avançando sem precisar recomeçar do zero.</p>
+      </details>
+    </div>
   </section>
-  <section id="arvore">
+
+  <section id="arvore" tabindex="0">
     <h2>Árvore de Decisão – Retenção e Cancelamento (Versão com Esforço de Valor)</h2>
     <details><summary>1. O aluno está dentro do prazo legal de 7 dias?</summary><ul><li>✅ Sim → Escute o motivo com atenção. Demonstre valor do produto. Se for objeção solucionável: busque reverter com empatia. Se insistir: prossiga com reembolso integral.</li><li>❌ Não → Ir para análise do tipo de contrato.</li></ul></details>
     <details><summary>2. Qual o tipo de contrato do aluno?</summary><ul><li>📌 Recorrente com fidelidade: aplicar multa de 20%.</li><li>📌 Não recorrente com fidelidade: aplicar mesma regra, com reembolso proporcional.</li><li>📌 Sem fidelidade ou promocional: verificar condições específicas.</li></ul></details>
@@ -144,9 +319,11 @@
     <details><summary>6. Encerramento humanizado</summary><ul><li>Ao reter: "Conte com a gente até a sua aprovação. Estamos do seu lado."</li><li>Ao cancelar: "Lamentamos sua saída, mas respeitamos sua escolha. Quando quiser voltar, estaremos prontos pra te receber."</li></ul></details>
   </section>
 
-  <section id="sugestao">
+  <section id="sugestao" tabindex="0">
     <h2>Dê sua sugestão de Script</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>
+    <div id="formContainer" style="min-height:420px;display:flex;align-items:center;justify-content:center;">
+      <button id="loadForm" style="background:#0d134c;color:#fff;padding:0.7rem 2rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;">Carregar formulário</button>
+    </div>
   </section>
 
   <footer>
@@ -154,38 +331,83 @@
   </footer>
 
   <script>
-    function searchPage() {
-      const keyword = document.getElementById("searchInput").value.toLowerCase();
-      const content = document.body;
-      const marks = content.querySelectorAll("mark");
-      marks.forEach(m => {
-        const parent = m.parentNode;
-        parent.replaceChild(document.createTextNode(m.textContent), m);
-        parent.normalize();
-      });
-      if (!keyword) return;
-      const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
-      const matches = [];
-      while (walker.nextNode()) {
-        const node = walker.currentNode;
-        if (
-          node.nodeValue.toLowerCase().includes(keyword) &&
-          node.parentNode.nodeName !== "SCRIPT" &&
-          node.parentNode.nodeName !== "STYLE"
-        ) {
-          const span = document.createElement("span");
-          const regex = new RegExp(`(${keyword})`, "gi");
-          span.innerHTML = node.nodeValue.replace(regex, "<mark>$1</mark>");
-          node.parentNode.replaceChild(span, node);
-          matches.push(span);
-        }
-      }
-      if (matches.length > 0) {
-        matches[0].scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  </script>
+    // Sticky nav shadow
+    window.addEventListener("scroll", function(){
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('scrolled', window.scrollY > 0);
+    });
 
+    // Hamburger for mobile
+    const navToggle = document.getElementById('navToggle');
+    const nav = document.getElementById('mainNav');
+    navToggle.addEventListener('click', function() {
+      nav.classList.toggle('closed');
+    });
+
+    // Scroll active link
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('section');
+    function activateLinkOnScroll() {
+      let index = sections.length;
+      while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+      navLinks.forEach(link => link.classList.remove('active'));
+      navLinks[index].classList.add('active');
+    }
+    activateLinkOnScroll();
+    window.addEventListener('scroll', activateLinkOnScroll);
+
+    // Expand/Collapse all
+    document.getElementById('expandAll').onclick = function() {
+      document.querySelectorAll('#scriptsList details').forEach(d => d.open = true);
+    };
+    document.getElementById('collapseAll').onclick = function() {
+      document.querySelectorAll('#scriptsList details').forEach(d => d.open = false);
+    };
+
+    // Categorias de scripts
+    document.querySelectorAll('.script-cats button').forEach(btn => {
+      btn.onclick = function() {
+        document.querySelectorAll('.script-cats button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        let cat = btn.getAttribute('data-cat');
+        document.querySelectorAll('#scriptsList details').forEach(d => {
+          d.style.display = (cat === 'todos' || d.getAttribute('data-cat') === cat) ? '' : 'none';
+        });
+      }
+    });
+
+    // Busca real nos scripts
+    const searchInput = document.getElementById('searchInput');
+    const scriptsList = document.getElementById('scriptsList');
+    const searchFeedback = document.getElementById('searchFeedback');
+    searchInput.addEventListener('input', function(){
+      let val = this.value.toLowerCase();
+      let found = 0;
+      document.querySelectorAll('#scriptsList details').forEach(d => {
+        const text = d.innerText.toLowerCase();
+        if(val && text.indexOf(val) === -1){
+          d.style.display = 'none';
+        } else {
+          d.style.display = '';
+          if(val) found++;
+        }
+      });
+      if(val && found === 0){
+        searchFeedback.textContent = "Nenhum script encontrado para: " + val;
+      } else {
+        searchFeedback.textContent = "";
+      }
+    });
+
+    // Lazy load do Google Forms
+    document.getElementById('loadForm').onclick = function(){
+      document.getElementById('formContainer').innerHTML = `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>`;
+    };
+
+    // Acessibilidade: permite abrir/fechar com Enter
+    document.querySelectorAll('summary').forEach(s => {
+      s.setAttribute('tabindex','0');
+    });
+  </script>
 </body>
 </html>
-
