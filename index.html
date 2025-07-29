@@ -31,9 +31,11 @@
     .quick-links a { display: inline-block; background: #e4e6f2; color: #0d134c; padding: 0.35rem 1rem; border-radius: 4px; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.4rem; text-decoration: none; font-size: 0.96rem; transition: background .2s;}
     .quick-links a:hover { background: #0d134c; color: #fff;}
     .decision-tree, .script-section, .sla-table, .faq-section, .objection-breaker, .suggestion-section { margin-bottom: 2rem;}
-    details { background: #f5f7fa; margin-bottom: 0.5rem; border-radius: 6px; padding: 1rem; border: 1px solid #e4e6f2; transition: box-shadow .2s;}
-    details[open] { box-shadow: 0 1px 4px #0d134c22; background: #e9f0fa;}
-    summary { font-weight: 600; font-size: 1.03rem; cursor: pointer;}
+    .accordion-group { background: #f7f8fd; border-radius: 8px; padding: 1rem 1rem 1.2rem 1rem; margin-bottom: 1.3rem;}
+    details { background: #fff; margin-bottom: 0.6rem; border-radius: 6px; padding: 0.55rem 1rem; border: 1px solid #e4e6f2; transition: box-shadow .2s;}
+    details[open] { box-shadow: 0 1px 4px #0d134c22; background: #f7faff;}
+    summary { font-weight: 600; font-size: 1.04rem; cursor: pointer;}
+    details div { font-size: 1.02rem; margin: 0.6rem 0 0 0;}
     .faq-list details { padding: 0.7rem 1rem;}
     .sla-table table { border-collapse: collapse; width: 100%; background: #f8fafd;}
     .sla-table th, .sla-table td { padding: 0.5rem 0.8rem; border: 1px solid #e4e6f2; font-size: 0.97rem;}
@@ -67,7 +69,6 @@
       <button data-segment="ead">Ensino Superior EAD</button>
       <button data-segment="presencial">Ensino Superior Presencial</button>
     </div>
-    <!-- MENU RÁPIDO -->
     <nav class="quick-menu" id="quickMenu">
       <a href="#politica" class="active">Política</a>
       <a href="#scripts">Scripts</a>
@@ -75,7 +76,6 @@
       <a href="#faq">FAQ</a>
       <a href="#sugestoes">Sugestões</a>
     </nav>
-    <!-- Campo de pesquisa -->
     <div class="searchbar">
       <label for="searchInput" style="font-weight:600; margin-right:0.8rem;">Pesquisar por palavra-chave:</label>
       <input id="searchInput" type="text" placeholder="Digite e pressione Enter…" autocomplete="off" />
@@ -108,49 +108,89 @@
     <p>Permanência Gran © 2025 | Página de uso exclusivo interno</p>
   </footer>
   <script>
-    // === BLOCO DE DADOS E FUNÇÕES ===
-    // 1. Dados de todos os segmentos, scripts, cards, FAQ, objeções
-    // 2. Função renderSegment para preencher todas as seções
-    // 3. Busca global
-    // 4. Troca de segmento
-    // 5. Menu rápido de navegação
-    // 6. Lazy load do formulário
+    // ====== BLOCO DE DADOS COMPLETO DOS SEGMENTOS ======
 
-    // [O BLOCO É LONGO DEMAIS PARA ESTA ÚNICA RESPOSTA. Siga para a PRÓXIMA MENSAGEM, que terá o JavaScript + Dados. Cole junto no final do arquivo!]
-// =============== BLOCO DE DADOS SEGMENTS ================
-const segments = {
-  prep: {
-    name: "Cursos Preparatórios",
-    policyCards: [
-      { title: "Renovação", items: [
-        "<b>Renovação automática:</b> sem fidelidade, se houver cartão de crédito cadastrado. Antecipada com fidelidade: opção de bônus progressivos.",
-        "<b>Valor considerado:</b> sempre o maior entre última compra/renovação e tabela vigente (sem descontos e promoções).",
-        "<b>Antecipada com fidelidade:</b> opção de 6 meses (+1 mês bônus), 9 meses (+2 bônus), 12 meses (+3 bônus).",
-        "Desconto de 5% para pagamento em PIX/Boleto em renovação antecipada.",
-        "<b>Pontuação Gran Clube:</b> disponível para alunos cadastrados, conforme regulamento."
-      ]},
-      { title: "Cancelamento & Multa", items: [
-        "<b>Até 7 dias:</b> sem multa, estorno total.",
-        "<b>Após 7 dias:</b> multa de 20% sobre valor total sem descontos, limitada a 80% do valor pago.",
-        "<b>Contrato recorrente:</b> multa no cartão, cobrança suspensa; não recorrente: multa no valor a ser devolvido.",
-        "<b>Segunda contratação:</b> não há multa até 7 dias.",
-        "<b>Contrato cancelado não pode ser reativado.</b>"
-      ]},
-      { title: "Retenção, Crédito e Ofertas", items: [
-        "Ofertas possíveis: manter valor, desconto, meses bônus, crédito, migração/downgrade.",
-        "Créditos: só podem ser usados na mesma BU, válidos por 2 anos.",
-        "Nunca solicitar dados de cartão ao aluno! Alteração sempre via portal do aluno.",
-        "Solicitações de cancelamento devem ser classificadas corretamente na árvore de motivos."
-      ]}
-    ],
-    aviso: "⚠️ <b>Importante:</b> Sempre confirme o tipo de contrato e data de aquisição antes de calcular multa ou aplicar ofertas. <b>Jamais solicite dados de cartão.</b>",
-    quickLinks: [
-      { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
-      { text: "Regulamento completo", href: "#", target: "_blank"},
-      { text: "Régua de Comunicação", href: "https://www.figma.com/file/W9agIpg6N0X32nTYoXqk8m/E-mails-Transacionais?node-id=1%3A10282&t=uRbG0zH1jRqHvoOA-0", target: "_blank"},
-      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
-    ],
-    decisionTree: `
+    // SCRIPTS bônus do Preparatório (novo grupo de scripts especiais)
+    const scriptsPrepBônus = {
+      group: "Ofertas Especiais e Situações Frequentes",
+      items: [
+        {
+          summary: "Falta de tempo – oferta de meses bônus",
+          content: "Entendo que a rotina pode ficar corrida, mas posso te ajudar adicionando 3 meses bônus ao final do seu plano. Assim, você ganha mais 90 dias de acesso gratuitos! Com uma rotina de 2 horas de estudo por dia, ao longo de um mês você pode assistir cerca de 80 videoaulas de 45 minutos. Aproveite pequenos momentos do dia: no ônibus lendo PDFs, na academia resolvendo questões, ou no horário de almoço assistindo aquela videoaula de uma matéria mais desafiadora. A flexibilidade está ao seu lado!"
+        },
+        {
+          summary: "Aluno aprovado na OAB – aproveitamento da assinatura ilimitada",
+          content: "Parabéns pela aprovação na OAB! Como sua assinatura é a Ilimitada - Concursos e Provas, você continua com acesso completo aos cursos de OAB, CFC e Residência. Você pode, inclusive, aproveitar os cursos da trilha Advocacia de Sucesso — que focam em prática jurídica, direito previdenciário, processual penal, CDC, ECA, empresarial e processual civil. Eles são ideais para quem está começando na advocacia e quer se destacar no dia a dia forense."
+        },
+        {
+          summary: "Explicação de multa X oferta de meses bônus",
+          content: "Sua assinatura já está no período de fidelidade de 12 meses, que se inicia após os 7 dias da compra. Cancelar agora implica em uma multa contratual de R$ 359,76, conforme previsto em contrato. Por isso, minha proposta de meses bônus é uma alternativa para que você não precise arcar com esse valor e ainda ganhe mais tempo para usar todos os recursos da plataforma."
+        },
+        {
+          summary: "Renovação automática – como funciona",
+          content: "A renovação da sua assinatura é programada automaticamente, mas sempre avisamos com antecedência: você recebe um e-mail 10 dias antes, informando todas as condições da renovação, e outro lembrete 1 dia antes. Se quiser, pode responder a esses e-mails ou, como fez agora, falar direto pelo chat ou WhatsApp para tirar dúvidas ou cancelar antes da renovação."
+        },
+        {
+          summary: "Pausa na assinatura – meses bônus",
+          content: "Se você precisa de uma pausa, posso ajudar! Seu plano Ilimitada - Concursos e Provas garante acesso a cursos de Concursos, OAB, CFC e Residências, diferente dos planos mais novos. Para não perder esse benefício e todo seu histórico de estudos, posso adicionar 4 meses bônus ao final do seu plano. Use esses 120 dias gratuitos para fazer uma pausa e, quando quiser voltar, é só retomar de onde parou, sem perder nada."
+        }
+      ]
+    };
+
+    // OBJEÇÕES bônus do Preparatório
+    const objectionsPrepBônus = [
+      {
+        summary: "Estou sem tempo para estudar.",
+        content: "Entendo, a rotina pode apertar mesmo! Que tal aproveitar 3 meses bônus no seu plano? Assim, você ganha mais tempo para conciliar seus estudos e, com pequenas mudanças na rotina, pode avançar sem abrir mão dos seus objetivos. Posso te dar dicas de organização se quiser!"
+      },
+      {
+        summary: "Passei na OAB/concurso e quero cancelar.",
+        content: "Parabéns pela conquista! Além dos cursos de preparação, sua assinatura inclui cursos avançados, trilhas de carreira e conteúdos exclusivos para quem já foi aprovado. Aproveite tudo que o Gran pode oferecer para o seu próximo passo — posso te mostrar opções alinhadas ao seu novo objetivo."
+      },
+      {
+        summary: "Achei a multa muito alta.",
+        content: "Compreendo sua preocupação. A multa segue a política contratual de fidelidade, mas posso buscar alternativas para que você não precise arcar com esse valor agora, como meses bônus ou ajustes no seu plano. Vamos encontrar juntos a melhor solução para você?"
+      },
+      {
+        summary: "Quero dar uma pausa.",
+        content: "Posso incluir meses bônus ao final do seu plano, permitindo que você faça uma pausa sem perder nenhum benefício ou histórico de estudos. Assim, quando retornar, é só continuar de onde parou, sem prejuízo."
+      }
+    ];
+
+    // BLOCO DE DADOS PRINCIPAL DOS SEGMENTOS (PREP, EAD, PRESENCIAL)
+    const segments = {
+      prep: {
+        name: "Cursos Preparatórios",
+        policyCards: [
+          { title: "Renovação", items: [
+            "<b>Renovação automática:</b> sem fidelidade, se houver cartão de crédito cadastrado. Antecipada com fidelidade: opção de bônus progressivos.",
+            "<b>Valor considerado:</b> sempre o maior entre última compra/renovação e tabela vigente (sem descontos e promoções).",
+            "<b>Antecipada com fidelidade:</b> opção de 6 meses (+1 mês bônus), 9 meses (+2 bônus), 12 meses (+3 bônus).",
+            "Desconto de 5% para pagamento em PIX/Boleto em renovação antecipada.",
+            "<b>Pontuação Gran Clube:</b> disponível para alunos cadastrados, conforme regulamento."
+          ]},
+          { title: "Cancelamento & Multa", items: [
+            "<b>Até 7 dias:</b> sem multa, estorno total.",
+            "<b>Após 7 dias:</b> multa de 20% sobre valor total sem descontos, limitada a 80% do valor pago.",
+            "<b>Contrato recorrente:</b> multa no cartão, cobrança suspensa; não recorrente: multa no valor a ser devolvido.",
+            "<b>Segunda contratação:</b> não há multa até 7 dias.",
+            "<b>Contrato cancelado não pode ser reativado.</b>"
+          ]},
+          { title: "Retenção, Crédito e Ofertas", items: [
+            "Ofertas possíveis: manter valor, desconto, meses bônus, crédito, migração/downgrade.",
+            "Créditos: só podem ser usados na mesma BU, válidos por 2 anos.",
+            "Nunca solicitar dados de cartão ao aluno! Alteração sempre via portal do aluno.",
+            "Solicitações de cancelamento devem ser classificadas corretamente na árvore de motivos."
+          ]}
+        ],
+        aviso: "⚠️ <b>Importante:</b> Sempre confirme o tipo de contrato e data de aquisição antes de calcular multa ou aplicar ofertas. <b>Jamais solicite dados de cartão.</b>",
+        quickLinks: [
+          { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
+          { text: "Regulamento completo", href: "#", target: "_blank"},
+          { text: "Régua de Comunicação", href: "https://www.figma.com/file/W9agIpg6N0X32nTYoXqk8m/E-mails-Transacionais?node-id=1%3A10282&t=uRbG0zH1jRqHvoOA-0", target: "_blank"},
+          { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+        ],
+        decisionTree: `
 <details><summary><span class="flow-step">1. Tipo de solicitação do aluno?</span></summary>
   <ul>
     <li><b>Cancelamento</b>
@@ -186,60 +226,77 @@ const segments = {
     <li>Envie pesquisa de satisfação ao finalizar.</li>
   </ul>
 </details>
+<details>
+  <summary><span class="flow-step">4. O aluno manifesta falta de tempo ou dificuldade de rotina?</span></summary>
+  <ul>
+    <li>Apresente a possibilidade de meses bônus, explicando como aproveitar melhor o tempo livre e oferecendo dicas práticas de uso da plataforma.</li>
+    <li>Registre no sistema se a oferta foi aceita ou recusada.</li>
+  </ul>
+</details>
+<details>
+  <summary><span class="flow-step">5. O aluno foi aprovado em concurso/OAB ou quer pausa?</span></summary>
+  <ul>
+    <li>Reforce que a assinatura continua com acesso a diversos cursos e trilhas exclusivas.</li>
+    <li>Ofereça meses bônus como alternativa para pausa, mantendo o histórico do aluno e seus benefícios.</li>
+    <li>Explique como funcionam as regras de renovação e fidelidade, se necessário.</li>
+  </ul>
+</details>
 `,
-    scripts: [
-      { summary: "Cancelamento até 7 dias", content: "Você está dentro do prazo legal de arrependimento, então podemos cancelar seu curso e estornar o valor integral, conforme nossa política. Antes de seguir, posso te apresentar todos os benefícios e alternativas que podem te ajudar na sua jornada?" },
-      { summary: "Cancelamento após 7 dias", content: "Após 7 dias, a política prevê multa de 20% sobre o valor total do contrato, sem descontos, limitada a 80% do valor pago. Quer que eu simule o valor? Também posso apresentar opções como crédito, migração de curso ou valores promocionais." },
-      { summary: "Dificuldade financeira", content: "Entendo o momento e estou aqui para ajudar! Podemos analisar juntos alternativas como desconto, meses bônus, ajuste de plano ou parcelamento para facilitar sua permanência." },
-      { summary: "Upgrade/Downgrade", content: "Você pode ajustar sua assinatura, migrar de plano ou manter o valor já investido. Tudo isso sem perder o progresso dos seus estudos." },
-      { summary: "Inadimplência", content: "Vamos renegociar os débitos e encontrar uma alternativa para regularizar sua situação e garantir seu acesso. Posso gerar um boleto ou link de pagamento para você." }
-    ],
-    sla: [
-      ["Setor", "Prazo (dias úteis)"],
-      ["Pedagógico", "2"],
-      ["Marketing", "1-2"],
-      ["Jurídico", "2"],
-      ["Secretaria", "2"],
-      ["Gran Questões", "2"],
-      ["Produção Educacional", "1-2"],
-    ],
-    faq: [
-      { q: "Quando posso usar créditos?", a: "Créditos ficam disponíveis por 2 anos no portal do aluno e só podem ser usados em produtos da mesma unidade de negócio (BU)." },
-      { q: "Contrato cancelado pode ser reativado?", a: "Não. É necessário realizar uma nova compra." },
-      { q: "Como funciona upgrade/downgrade?", a: "Permite migrar de plano ou ajustar assinatura, mantendo progresso e aproveitando o valor já investido." },
-      { q: "O que acontece se o pagamento do upgrade/downgrade não aprovar?", a: "Você poderá tentar novamente ou será aberto um caso para a área de retenção." },
-      { q: "Posso pedir dados de cartão ao aluno?", a: "Jamais! Toda alteração de pagamento é feita pelo aluno, via portal." }
-    ]
-  },
-  ead: {
-    name: "Ensino Superior EAD",
-    policyCards: [
-      { title: "Rematrícula & Renovação", items: [
-        "<b>Rematrícula automática:</b> ao fim do período letivo, desde que não haja pendências.",
-        "Ambiente de rematrícula abre 30 dias antes do fim do período. Permite alteração de pagamento.",
-        "Adimplentes: rematrícula liberada. Inadimplentes ou com documentação pendente: bloqueada até regularização.",
-        "Sucesso gera pontuação no Gran Clube."
-      ]},
-      { title: "Retenção, Cancelamento & Trancamento", items: [
-        "Canais: chat, formulário, WhatsApp, telefone, click to call.",
-        "Solicitações devem ser registradas como casos no sistema. Duplicidade é mesclada automaticamente.",
-        "Cancelamento: multa de 20% do valor total do contrato (sem descontos), limitada a 80% do valor contratado.",
-        "Trancamento: só após 180 dias de contrato. Prazo máximo: 4 semestres (Bacharel/Licenciatura) ou 2 semestres (Tecnólogo).",
-        "Após cancelamento ou trancamento, contrato não pode ser reativado."
-      ]},
-      { title: "Crédito & Estorno", items: [
-        "Ofertas: valor atual, mensalidade social, descontos vigentes, crédito.",
-        "Créditos disponíveis por 2 anos, apenas para a mesma BU.",
-        "Jamais solicitar dados de cartão!"
-      ]}
-    ],
-    aviso: "⚠️ Sempre confira situação financeira e documental do aluno antes de prosseguir com rematrícula ou cancelamento.",
-    quickLinks: [
-      { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
-      { text: "Regulamento EAD", href: "#", target: "_blank"},
-      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
-    ],
-    decisionTree: `
+        // SCRIPTS de atendimento (com novo grupo de bônus)
+        scripts: [
+          { summary: "Cancelamento até 7 dias", content: "Você está dentro do prazo legal de arrependimento, então podemos cancelar seu curso e estornar o valor integral, conforme nossa política. Antes de seguir, posso te apresentar todos os benefícios e alternativas que podem te ajudar na sua jornada?" },
+          { summary: "Cancelamento após 7 dias", content: "Após 7 dias, a política prevê multa de 20% sobre o valor total do contrato, sem descontos, limitada a 80% do valor pago. Quer que eu simule o valor? Também posso apresentar opções como crédito, migração de curso ou valores promocionais." },
+          { summary: "Dificuldade financeira", content: "Entendo o momento e estou aqui para ajudar! Podemos analisar juntos alternativas como desconto, meses bônus, ajuste de plano ou parcelamento para facilitar sua permanência." },
+          { summary: "Upgrade/Downgrade", content: "Você pode ajustar sua assinatura, migrar de plano ou manter o valor já investido. Tudo isso sem perder o progresso dos seus estudos." },
+          { summary: "Inadimplência", content: "Vamos renegociar os débitos e encontrar uma alternativa para regularizar sua situação e garantir seu acesso. Posso gerar um boleto ou link de pagamento para você." },
+          scriptsPrepBônus
+        ],
+        sla: [
+          ["Setor", "Prazo (dias úteis)"],
+          ["Pedagógico", "2"],
+          ["Marketing", "1-2"],
+          ["Jurídico", "2"],
+          ["Secretaria", "2"],
+          ["Gran Questões", "2"],
+          ["Produção Educacional", "1-2"],
+        ],
+        faq: [
+          { q: "Quando posso usar créditos?", a: "Créditos ficam disponíveis por 2 anos no portal do aluno e só podem ser usados em produtos da mesma unidade de negócio (BU)." },
+          { q: "Contrato cancelado pode ser reativado?", a: "Não. É necessário realizar uma nova compra." },
+          { q: "Como funciona upgrade/downgrade?", a: "Permite migrar de plano ou ajustar assinatura, mantendo progresso e aproveitando o valor já investido." },
+          { q: "O que acontece se o pagamento do upgrade/downgrade não aprovar?", a: "Você poderá tentar novamente ou será aberto um caso para a área de retenção." },
+          { q: "Posso pedir dados de cartão ao aluno?", a: "Jamais! Toda alteração de pagamento é feita pelo aluno, via portal." }
+        ]
+      },
+      ead: {
+        name: "Ensino Superior EAD",
+        policyCards: [
+          { title: "Rematrícula & Renovação", items: [
+            "<b>Rematrícula automática:</b> ao fim do período letivo, desde que não haja pendências.",
+            "Ambiente de rematrícula abre 30 dias antes do fim do período. Permite alteração de pagamento.",
+            "Adimplentes: rematrícula liberada. Inadimplentes ou com documentação pendente: bloqueada até regularização.",
+            "Sucesso gera pontuação no Gran Clube."
+          ]},
+          { title: "Retenção, Cancelamento & Trancamento", items: [
+            "Canais: chat, formulário, WhatsApp, telefone, click to call.",
+            "Solicitações devem ser registradas como casos no sistema. Duplicidade é mesclada automaticamente.",
+            "Cancelamento: multa de 20% do valor total do contrato (sem descontos), limitada a 80% do valor contratado.",
+            "Trancamento: só após 180 dias de contrato. Prazo máximo: 4 semestres (Bacharel/Licenciatura) ou 2 semestres (Tecnólogo).",
+            "Após cancelamento ou trancamento, contrato não pode ser reativado."
+          ]},
+          { title: "Crédito & Estorno", items: [
+            "Ofertas: valor atual, mensalidade social, descontos vigentes, crédito.",
+            "Créditos disponíveis por 2 anos, apenas para a mesma BU.",
+            "Jamais solicitar dados de cartão!"
+          ]}
+        ],
+        aviso: "⚠️ Sempre confira situação financeira e documental do aluno antes de prosseguir com rematrícula ou cancelamento.",
+        quickLinks: [
+          { text: "Simulador de Multa/Estorno", href: "https://docs.google.com/spreadsheets/d/17wDzJuU_R3KhWxwIN26njPPlTBn0jRk9-eZjSv7CCc4/edit", target: "_blank"},
+          { text: "Regulamento EAD", href: "#", target: "_blank"},
+          { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+        ],
+        decisionTree: `
 <details><summary><span class="flow-step">1. Tipo de solicitação?</span></summary>
   <ul>
     <li><b>Rematrícula:</b>
@@ -270,56 +327,147 @@ const segments = {
 <details><summary><span class="flow-step">3. Finalize, classifique e envie pesquisa de satisfação</span></summary>
 </details>
 `,
-    scripts: [
-      { summary: "Rematrícula bloqueada", content: "Sua rematrícula está bloqueada devido a pendências financeiras ou documentação. Assim que regularizar, o acesso será liberado. Precisa de ajuda para gerar boleto ou enviar documentos?" },
-      { summary: "Cancelamento até 7 dias", content: "Seu pedido está dentro do prazo legal, então não haverá multa. Podemos seguir com o cancelamento, ou se quiser, posso apresentar benefícios que talvez você não tenha explorado ainda!" },
-      { summary: "Cancelamento após 7 dias", content: "Como o prazo de 7 dias já foi ultrapassado, a política prevê multa de 20% sobre o valor total do contrato (sem descontos), limitada a 80% do valor contratado. Posso calcular para você ou apresentar outras opções para facilitar sua permanência." },
-      { summary: "Trancamento de matrícula", content: "O trancamento é permitido após 180 dias de início do contrato e tem limite de semestres conforme seu curso. Isso suspende suas mensalidades e acesso à biblioteca. Para destrancar, é só nos procurar." },
-      { summary: "Inadimplência", content: "Podemos parcelar ou renegociar seus débitos para facilitar a regularização. Prefere gerar boleto, link de pagamento ou conversar sobre alternativas?" }
-    ],
-    sla: [
-      ["Setor", "Prazo (dias úteis)"],
-      ["Pedagógico", "3"],
-      ["Marketing", "3"],
-      ["Jurídico", "7"],
-      ["Secretaria Acadêmica", "3"],
-      ["Biblioteca", "3"],
-      ["Gran Questões", "3"],
-      ["Produção Educacional", "3"],
-    ],
-    faq: [
-      { q: "Quando posso usar créditos?", a: "Créditos ficam disponíveis por 2 anos e só podem ser usados em produtos da mesma BU." },
-      { q: "Contrato cancelado/trancado pode ser reativado?", a: "Não. É necessário novo processo ou destrancamento, conforme regras." },
-      { q: "Quais as regras de trancamento?", a: "Só permitido após 180 dias. Prazo máximo: 4 semestres para bacharel/licenciatura, 2 para tecnólogo." },
-      { q: "Posso pedir dados de cartão?", a: "Nunca! Alteração sempre via portal do aluno." },
-      { q: "Como é calculada a multa de cancelamento?", a: "20% do valor total do contrato, sem descontos, limitada a 80% do valor contratado." }
-    ]
-  },
-  presencial: {
-    name: "Ensino Superior Presencial",
-    policyCards: [
-      { title: "Cancelamento & Multa", items: [
-        "<b>Multa:</b> 20% do valor das parcelas a vencer do semestre vigente para adimplentes.",
-        "Inadimplentes: 20% + parcelas vencidas (com juros/multa).",
-        "Solicitação presencial deve ser registrada no sistema TOTVS e comunicada à coordenação pelo Slack."
-      ]},
-      { title: "Atendimento & Fluxo", items: [
-        "Atendimento receptivo: chat, formulário, WhatsApp ou presencial.",
-        "Solicitações presenciais ou recebidas por outras áreas: sempre redirecionar ao formulário ou WhatsApp oficial.",
-        "Registrar protocolo no TOTVS, informar diretoria/coordenadores via Slack, e classificar corretamente no sistema."
-      ]},
-      { title: "Trancamento & Reativação", items: [
-        "Trancamento: permitido só a partir do 2º semestre, conforme calendário acadêmico.",
-        "Após cancelamento, não há reativação. Novo processo é necessário.",
-        "Trancamento: suspende mensalidades, acesso à biblioteca e conteúdo acadêmico."
-      ]}
-    ],
-    aviso: "⚠️ No presencial, sempre registre protocolo no TOTVS e comunique coordenadores pelo Slack #retenção-es-presencial.",
-    quickLinks: [
-      { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
-      { text: "Canal Slack #retenção-es-presencial", href: "https://mudarvidas.enterprise.slack.com/archives/C08J101D2MV", target: "_blank"}
-    ],
-    decisionTree: `
+        // BLOCO DE SCRIPTS agrupados por temas
+        scripts: [
+          {
+            group: "Trancamento de matrícula",
+            items: [
+              {
+                summary: "Solicitação de trancamento no 1º semestre",
+                content: "Olá! Compreendo seu pedido, mas, conforme nossa política institucional, <b>o trancamento só pode ser solicitado após a conclusão do primeiro semestre</b>. Caso tenha alguma dificuldade ou precise de apoio, posso apresentar alternativas para que você não precise interromper seus estudos agora. Estou à disposição para te ajudar!"
+              },
+              {
+                summary: "Trancamento após o 1º semestre",
+                content: "O trancamento está disponível para alunos que já completaram pelo menos um semestre do curso, conforme o regulamento. Se for o seu caso, posso dar início ao processo agora mesmo! Por favor, confirme seus dados para que eu possa te orientar sobre os próximos passos."
+              },
+              {
+                summary: "Consequências do trancamento",
+                content: "Ao solicitar o trancamento, sua matrícula será suspensa temporariamente e o acesso ao ambiente virtual será bloqueado. Para retornar, é só solicitar a reativação dentro do prazo permitido, e você poderá retomar de onde parou. Se tiver dúvidas sobre prazos ou condições, posso explicar em detalhes!"
+              }
+            ]
+          },
+          {
+            group: "Cancelamento de matrícula",
+            items: [
+              {
+                summary: "Cancelamento dentro do prazo de 7 dias",
+                content: "Como sua matrícula foi realizada há menos de 7 dias, você pode solicitar o cancelamento com reembolso integral, conforme previsto no Código de Defesa do Consumidor e no nosso regulamento. Deseja seguir com o cancelamento ou gostaria de conhecer alternativas para continuar com a gente?"
+              },
+              {
+                summary: "Cancelamento após o prazo de 7 dias",
+                content: "Para cancelamentos solicitados após 7 dias da matrícula, é prevista uma multa de 20% sobre o valor total do contrato, conforme nosso termo de uso. Caso queira, posso simular o valor para você ou apresentar opções para facilitar sua permanência."
+              }
+            ]
+          },
+          {
+            group: "Rematrícula, Aproveitamento e Reativação",
+            items: [
+              {
+                summary: "Solicitação de rematrícula",
+                content: "Para efetuar sua rematrícula, é necessário estar adimplente e com toda a documentação regularizada. Se tiver qualquer pendência, posso te ajudar a resolver para garantir seu retorno sem contratempos!"
+              },
+              {
+                summary: "Reativação após trancamento",
+                content: "Se você trancou a matrícula, pode solicitar a reativação dentro do prazo previsto no regulamento, retomando seus estudos de onde parou. Precisa de ajuda para iniciar esse processo?"
+              }
+            ]
+          },
+          {
+            group: "Ofertas e Condições Especiais",
+            items: [
+              {
+                summary: "Oferta de pós-graduação gratuita/conveniada",
+                content: "Ao concluir sua graduação, você pode ser elegível a uma pós-graduação gratuita ou com condições especiais, conforme regulamento vigente da promoção. Caso queira conferir sua elegibilidade e os critérios, posso verificar para você!"
+              },
+              {
+                summary: "Oferta de crédito para outro curso",
+                content: "Se preferir, é possível converter o valor já investido em créditos para uso em outro curso da mesma área, conforme a política de créditos vigente. Gostaria de saber mais sobre essa alternativa?"
+              }
+            ]
+          },
+          {
+            group: "Reversão de cancelamento e Argumentos motivacionais",
+            items: [
+              {
+                summary: "Argumento de reversão – dúvida/insatisfação",
+                content: "Sinto muito que sua experiência não tenha sido positiva até agora. Posso entender melhor seu caso e buscar soluções ou ajustes que tornem sua trajetória mais leve e produtiva? Estou aqui para te apoiar!"
+              },
+              {
+                summary: "Argumento – vínculo com objetivo de carreira",
+                content: "Investir nos estudos é um passo importante para conquistar seus objetivos profissionais e transformar sua carreira. Estamos aqui para apoiar cada etapa da sua jornada!"
+              }
+            ]
+          },
+          {
+            group: "Pós-graduação, Créditos e Aproveitamento",
+            items: [
+              {
+                summary: "Prazo para uso de crédito em outro curso",
+                content: "Créditos gerados a partir de cancelamento ou aproveitamento podem ser utilizados em outro curso da mesma área no prazo de até 2 anos, conforme política institucional. Posso explicar como funciona o uso e as opções disponíveis?"
+              },
+              {
+                summary: "Aproveitamento de disciplinas em nova matrícula",
+                content: "As disciplinas já cursadas podem ser aproveitadas em uma nova matrícula, desde que estejam dentro do prazo permitido e respeitem as regras de equivalência curricular. Se quiser iniciar essa análise, posso encaminhar sua solicitação!"
+              }
+            ]
+          },
+          {
+            group: "Informações financeiras",
+            items: [
+              {
+                summary: "Esclarecimento sobre valores/multa de cancelamento",
+                content: "A multa prevista para cancelamentos após o prazo legal é de 20% sobre o valor total do contrato, desconsiderando descontos, conforme nossa política e termo de uso. Precisa que eu simule esse valor para seu caso?"
+              },
+              {
+                summary: "Solicitação de segunda via de boleto/fatura",
+                content: "Posso gerar e enviar a segunda via do seu boleto, caso necessário. Por favor, confirme qual parcela deseja regularizar ou se prefere receber todos os boletos pendentes."
+              }
+            ]
+          }
+        ],
+        sla: [
+          ["Setor", "Prazo (dias úteis)"],
+          ["Pedagógico", "3"],
+          ["Marketing", "3"],
+          ["Jurídico", "7"],
+          ["Secretaria Acadêmica", "3"],
+          ["Biblioteca", "3"],
+          ["Gran Questões", "3"],
+          ["Produção Educacional", "3"],
+        ],
+        faq: [
+          { q: "Como funciona o trancamento?", a: "O trancamento é permitido somente após completar pelo menos um semestre (ou 180 dias de matrícula). O limite é de até 4 semestres trancados em bacharelado/licenciatura e 2 em tecnólogo. Solicite pelo canal oficial, enviando RG e CPF." },
+          { q: "Qual o valor da multa de cancelamento?", a: "A multa para cancelamento após o prazo legal de 7 dias é de 20% sobre o valor total do contrato, desconsiderando descontos. Em casos de força maior, pode haver análise para isenção mediante documentação." },
+          { q: "O que preciso para rematrícula?", a: "Estar adimplente, sem pendências de documentos e respeitar o calendário. Se precisar regularizar alguma situação, peça ajuda!" },
+          { q: "Consigo aproveitar as disciplinas já cursadas se mudar de curso?", a: "Sim, desde que estejam dentro do prazo e sejam consideradas equivalentes conforme análise curricular." },
+          { q: "Posso trancar no primeiro semestre?", a: "Não. Só é permitido após a conclusão do primeiro semestre (ou 180 dias), conforme regulamento institucional." }
+        ]
+      },
+      presencial: {
+        name: "Ensino Superior Presencial",
+        policyCards: [
+          { title: "Cancelamento & Multa", items: [
+            "<b>Multa:</b> 20% do valor das parcelas a vencer do semestre vigente para adimplentes.",
+            "Inadimplentes: 20% + parcelas vencidas (com juros/multa).",
+            "Solicitação presencial deve ser registrada no sistema TOTVS e comunicada à coordenação pelo Slack."
+          ]},
+          { title: "Atendimento & Fluxo", items: [
+            "Atendimento receptivo: chat, formulário, WhatsApp ou presencial.",
+            "Solicitações presenciais ou recebidas por outras áreas: sempre redirecionar ao formulário ou WhatsApp oficial.",
+            "Registrar protocolo no TOTVS, informar diretoria/coordenadores via Slack, e classificar corretamente no sistema."
+          ]},
+          { title: "Trancamento & Reativação", items: [
+            "Trancamento: permitido só a partir do 2º semestre, conforme calendário acadêmico.",
+            "Após cancelamento, não há reativação. Novo processo é necessário.",
+            "Trancamento: suspende mensalidades, acesso à biblioteca e conteúdo acadêmico."
+          ]}
+        ],
+        aviso: "⚠️ No presencial, sempre registre protocolo no TOTVS e comunique coordenadores pelo Slack #retenção-es-presencial.",
+        quickLinks: [
+          { text: "WhatsApp Oficial", href: "https://api.whatsapp.com/send?phone=5541992801083", target: "_blank"},
+          { text: "Canal Slack #retenção-es-presencial", href: "https://mudarvidas.enterprise.slack.com/archives/C08J101D2MV", target: "_blank"}
+        ],
+        decisionTree: `
 <details><summary><span class="flow-step">1. Solicitação presencial ou via outros canais?</span></summary>
   <ul>
     <li>Direcione para formulário ou WhatsApp oficial. <br>
@@ -341,219 +489,253 @@ const segments = {
   </ul>
 </details>
 `,
-    scripts: [
-      { summary: "Cancelamento presencial", content: "Vamos registrar sua solicitação e calcular a multa de 20% das parcelas a vencer deste semestre. Se houver parcelas em atraso, elas serão somadas com juros e multa. Link/boleto será enviado durante o atendimento. Após o cancelamento, será necessário novo processo para retorno." },
-      { summary: "Trancamento", content: "O trancamento presencial só é permitido a partir do 2º semestre, conforme calendário. Mensalidades são suspensas, assim como o acesso à biblioteca e materiais. Para destrancar ou retornar, é preciso protocolar nova solicitação." }
-    ],
-    sla: [
-      ["Setor", "Prazo (dias úteis)"],
-      ["Secretaria Acadêmica", "3"],
-      ["Pedagógico", "3"],
-      ["Jurídico", "7"],
-    ],
-    faq: [
-      { q: "Como é calculada a multa?", a: "20% das parcelas a vencer (adimplente) ou 20% + parcelas vencidas com juros/multa (inadimplente)." },
-      { q: "Posso reativar o contrato depois de cancelado?", a: "Não. É necessário novo processo seletivo/contrato." },
-      { q: "Quando posso pedir trancamento?", a: "Apenas a partir do 2º semestre, conforme calendário acadêmico." },
-      { q: "O que devo fazer após solicitação presencial?", a: "Registrar protocolo no TOTVS, informar coordenação via Slack, e classificar no sistema." }
-    ]
-  }
-};
+        scripts: [
+          { summary: "Cancelamento presencial", content: "Vamos registrar sua solicitação e calcular a multa de 20% das parcelas a vencer deste semestre. Se houver parcelas em atraso, elas serão somadas com juros e multa. Link/boleto será enviado durante o atendimento. Após o cancelamento, será necessário novo processo para retorno." },
+          { summary: "Trancamento", content: "O trancamento presencial só é permitido a partir do 2º semestre, conforme calendário. Mensalidades são suspensas, assim como o acesso à biblioteca e materiais. Para destrancar ou retornar, é preciso protocolar nova solicitação." }
+        ],
+        sla: [
+          ["Setor", "Prazo (dias úteis)"],
+          ["Secretaria Acadêmica", "3"],
+          ["Pedagógico", "3"],
+          ["Jurídico", "7"],
+        ],
+        faq: [
+          { q: "Como é calculada a multa?", a: "20% das parcelas a vencer (adimplente) ou 20% + parcelas vencidas com juros/multa (inadimplente)." },
+          { q: "Posso reativar o contrato depois de cancelado?", a: "Não. É necessário novo processo seletivo/contrato." },
+          { q: "Quando posso pedir trancamento?", a: "Apenas a partir do 2º semestre, conforme calendário acadêmico." },
+          { q: "O que devo fazer após solicitação presencial?", a: "Registrar protocolo no TOTVS, informar coordenação via Slack, e classificar no sistema." }
+        ]
+      }
+    };
 
-// =============== RENDERIZAÇÃO ================
-function renderSegment(segmentKey) {
-  const seg = segments[segmentKey];
+    // OBJEÇÕES POR SEGMENTO
+    const objectionsPrep = [
+      ...objectionsPrepBônus,
+      {
+        summary: "Não estou usando o curso/plataforma",
+        content: "Entendo que a rotina pode ser corrida, mas sua vaga, suporte e acesso a conteúdos exclusivos ficaram reservados para você desde o início. Posso te mostrar como explorar melhor a plataforma e ajustar seu cronograma de estudo ao seu tempo?"
+      },
+      {
+        summary: "Não gostei do material/aulas",
+        content: "Lamento por não ter atendido suas expectativas, mas nosso conteúdo é revisado por especialistas e focado na aprovação. Podemos analisar juntos suas dificuldades e indicar trilhas, professores ou materiais mais adequados ao seu perfil?"
+      }
+      // (Outras objeções padrões podem ser incluídas)
+    ];
 
-  // Cards de política
-  document.getElementById('policyCards').innerHTML = seg.policyCards.map(card => `
-    <div class="policy-card">
-      <h3>${card.title}</h3>
-      <ul>${card.items.map(i => `<li>${i}</li>`).join('')}</ul>
-    </div>
-  `).join('');
+    // Objeções EAD (básico)
+    const objectionsEAD = [
+      {
+        summary: "Quero trancar no primeiro semestre",
+        content: "Entendo sua necessidade, mas, conforme nossa política, o trancamento só pode ser solicitado após a conclusão do primeiro semestre. Podemos conversar sobre alternativas ou apoios para que você continue até lá?"
+      },
+      {
+        summary: "Não estou usando a plataforma",
+        content: "Mesmo que você ainda não tenha acessado o conteúdo, sua vaga, suporte e recursos sempre estiveram reservados para você. Posso te mostrar dicas e formas de aproveitar ao máximo sua assinatura a partir de agora?"
+      },
+      {
+        summary: "Motivo financeiro",
+        content: "Sei que a questão financeira pode pesar. Posso consultar para você opções de desconto, flexibilização de pagamento ou condições especiais conforme a política vigente. Vamos juntos buscar uma solução viável para você?"
+      },
+      {
+        summary: "Quero cancelar, não gostei do curso",
+        content: "Sinto muito que sua experiência não tenha sido positiva. Posso entender melhor seu caso e buscar ajustes que tornem sua trajetória mais leve? Se preferir, apresento alternativas para você aproveitar melhor o que oferecemos."
+      },
+      {
+        summary: "Não sabia da multa/multa muito alta",
+        content: "Compreendo sua surpresa. A multa de 20% está prevista em nosso contrato e segue a legislação vigente. Se quiser, posso detalhar como é calculada ou buscar alternativas para facilitar sua permanência."
+      }
+    ];
 
-  // Aviso de destaque
-  document.getElementById('aviso').innerHTML = seg.aviso;
+    // Objeções Presencial (padrão)
+    const objectionsPresencial = [
+      {
+        summary: "Não estou usando o curso/plataforma",
+        content: "Entendo que a rotina pode ser corrida, mas sua vaga e suporte sempre estiveram à disposição desde o início. Posso te mostrar como explorar melhor sua matrícula e ajustar seu cronograma ao seu tempo?"
+      }
+    ];
 
-  // Links úteis
-  document.getElementById('quickLinks').innerHTML = seg.quickLinks.map(l =>
-    `<a href="${l.href}" target="${l.target || ''}" rel="noopener">${l.text}</a>`).join('');
+    // =========== RENDERIZAÇÃO ===========
+    function renderSegment(segmentKey) {
+      const seg = segments[segmentKey];
 
-  // Árvore de decisão
-  document.getElementById('decisionTree').innerHTML = `
-    <h2>Árvore de Decisão — ${seg.name}</h2>
-    ${seg.decisionTree}
-  `;
+      document.getElementById('policyCards').innerHTML = seg.policyCards.map(card => `
+        <div class="policy-card">
+          <h3>${card.title}</h3>
+          <ul>${card.items.map(i => `<li>${i}</li>`).join('')}</ul>
+        </div>
+      `).join('');
+      document.getElementById('aviso').innerHTML = seg.aviso;
+      document.getElementById('quickLinks').innerHTML = seg.quickLinks.map(l =>
+        `<a href="${l.href}" target="${l.target || ''}" rel="noopener">${l.text}</a>`).join('');
+      document.getElementById('decisionTree').innerHTML = `
+        <h2>Árvore de Decisão — ${seg.name}</h2>
+        ${seg.decisionTree}
+      `;
 
-  // Scripts de atendimento
-  document.getElementById('scriptSection').innerHTML = `
-    <h2>Scripts de Atendimento</h2>
-    ${seg.scripts.map(s =>
-      `<details><summary>${s.summary}</summary><p>${s.content}</p></details>`
-    ).join('')}
-  `;
+      // SCRIPTS
+      if (segmentKey === 'ead') {
+        document.getElementById('scriptSection').innerHTML = `
+          <h2>Scripts – Ensino Superior</h2>
+          ${seg.scripts.map(grupo =>
+            `<div class="accordion-group">
+              <h3>${grupo.group}</h3>
+              ${grupo.items.map(s =>
+                `<details><summary>${s.summary}</summary><div>${s.content}</div></details>`
+              ).join('')}
+            </div>`
+          ).join('')}
+        `;
+      } else if (segmentKey === 'prep') {
+        document.getElementById('scriptSection').innerHTML = `
+          <h2>Scripts de Atendimento</h2>
+          ${seg.scripts.map(grupo =>
+            grupo.group ? `<div class="accordion-group">
+              <h3>${grupo.group}</h3>
+              ${grupo.items.map(s =>
+                `<details><summary>${s.summary}</summary><div>${s.content}</div></details>`
+              ).join('')}
+            </div>` :
+            `<details><summary>${grupo.summary}</summary><p>${grupo.content}</p></details>`
+          ).join('')}
+        `;
+      } else {
+        document.getElementById('scriptSection').innerHTML = `
+          <h2>Scripts de Atendimento</h2>
+          ${seg.scripts.map(s =>
+            `<details><summary>${s.summary}</summary><p>${s.content}</p></details>`
+          ).join('')}
+        `;
+      }
 
-  // SLAs/canais
-  document.getElementById('slaTable').innerHTML = `
-    <h2>SLAs e Canais Oficiais</h2>
-    <table>
-      <tr>${seg.sla[0].map(t => `<th>${t}</th>`).join('')}</tr>
-      ${seg.sla.slice(1).map(row => `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`).join('')}
-    </table>
-    <p style="margin: 0.5rem 0 0 0.2rem; font-size:0.97rem; color:#555;">
-      Priorize sempre o canal oficial da política vigente. Consulte prazos antes de prometer retorno.
-    </p>
-  `;
+      document.getElementById('slaTable').innerHTML = `
+        <h2>SLAs e Canais Oficiais</h2>
+        <table>
+          <tr>${seg.sla[0].map(t => `<th>${t}</th>`).join('')}</tr>
+          ${seg.sla.slice(1).map(row => `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`).join('')}
+        </table>
+        <p style="margin: 0.5rem 0 0 0.2rem; font-size:0.97rem; color:#555;">
+          Priorize sempre o canal oficial da política vigente. Consulte prazos antes de prometer retorno.
+        </p>
+      `;
 
-  // FAQ
-  document.getElementById('faqSection').innerHTML = `
-    <h2>Perguntas Frequentes (FAQ)</h2>
-    <div class="faq-list">
-      ${seg.faq.map(f =>
-        `<details><summary>${f.q}</summary><p>${f.a}</p></details>`
-      ).join('')}
-    </div>
-  `;
+      document.getElementById('faqSection').innerHTML = `
+        <h2>Perguntas Frequentes (FAQ)</h2>
+        <div class="faq-list">
+          ${seg.faq.map(f =>
+            `<details><summary>${f.q}</summary><p>${f.a}</p></details>`
+          ).join('')}
+        </div>
+      `;
 
-  // Objeções (padrão, não muda por segmento para não duplicar no código, mas pode personalizar se desejar)
-  document.getElementById('objectionBreaker').innerHTML = `
-    <h2>Quebra de Objeções — Como Reter o Aluno</h2>
-    <details><summary><b>“Não estou usando o curso/plataforma”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Entendo que a rotina pode ser corrida, mas sua vaga, suporte e acesso a conteúdos exclusivos ficaram reservados para você desde o início. Posso te mostrar como explorar melhor a plataforma e ajustar seu cronograma de estudo ao seu tempo?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Não gostei do material/aulas”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Lamento por não ter atendido suas expectativas, mas nosso conteúdo é revisado por especialistas e focado na aprovação. Podemos analisar juntos suas dificuldades e indicar trilhas, professores ou materiais mais adequados ao seu perfil?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Estou sem tempo para estudar”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> É normal que a rotina aperte, mas nosso curso é flexível! Posso apresentar planos de estudo personalizados, microaulas, revisões rápidas ou módulos que podem ser acessados no seu ritmo, sem pressa.</li>
-      </ul>
-    </details>
-    <details><summary><b>“Motivos financeiros”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> O momento realmente pode pesar, mas há alternativas! Temos ofertas especiais, crédito, meses bônus e até parcelamento para facilitar. Que tal revisarmos juntos as opções sem prejudicar seu sonho?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Reprovei e desanimei”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> A reprovação faz parte da jornada de qualquer aprovado. Podemos analisar juntos o que faltou, rever seu plano de estudo e adaptar seu caminho para a próxima tentativa. Estamos aqui para apoiar em todas as etapas.</li>
-      </ul>
-    </details>
-    <details><summary><b>“Vou mudar de foco/objetivo”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Mudanças de planos fazem parte! Temos cursos e módulos alinhados a vários objetivos. Podemos migrar seu plano ou transferir créditos para um novo curso, se for do seu interesse.</li>
-      </ul>
-    </details>
-    <details><summary><b>“A plataforma não funciona/bloqueou”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Lamento pelo transtorno! Nosso suporte está pronto para resolver qualquer problema. Posso abrir uma solicitação técnica para você agora, ou se preferir, te acompanhar até a solução?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Não sabia da renovação/cobrança automática”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Entendo que isso pode gerar surpresa, mas a renovação é uma facilidade para que você não perca acesso nem ofertas exclusivas. Posso explicar as condições e encontrar juntos a melhor solução para este momento?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Achei caro/não cabe no orçamento”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Compreendo a preocupação! O valor inclui todos os recursos, suporte, trilhas de estudo e atualizações constantes. Posso avaliar condições promocionais, descontos ou flexibilizar pagamentos para você?</li>
-      </ul>
-    </details>
-    <details><summary><b>“Já passei no concurso / consegui vaga”</b></summary>
-      <ul>
-        <li><b>Argumento:</b> Parabéns pela conquista! Se quiser, posso apresentar planos avançados para novas etapas ou concursos, ou explicar como utilizar seus créditos/remanescentes em outros cursos Gran.</li>
-      </ul>
-    </details>
-  `;
-}
-
-// ===== TROCA DE SEGMENTO =====
-document.querySelectorAll('.segment-selector button').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.segment-selector button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderSegment(btn.getAttribute('data-segment'));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
-renderSegment('prep');
-
-// ===== MENU RÁPIDO =====
-document.querySelectorAll('.quick-menu a').forEach(link => {
-  link.addEventListener('click', function(e){
-    e.preventDefault();
-    document.querySelectorAll('.quick-menu a').forEach(a => a.classList.remove('active'));
-    this.classList.add('active');
-    const id = this.getAttribute('href');
-    const target = document.querySelector(id);
-    if (target) {
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY - 40,
-        behavior: 'smooth'
-      });
+      // OBJEÇÕES
+      if (segmentKey === 'prep') {
+        document.getElementById('objectionBreaker').innerHTML = `
+          <h2>Quebra de Objeções — Como Reter o Aluno</h2>
+          ${objectionsPrep.map(o =>
+            `<details><summary>${o.summary}</summary><div>${o.content}</div></details>`
+          ).join('')}
+        `;
+      } else if (segmentKey === 'ead') {
+        document.getElementById('objectionBreaker').innerHTML = `
+          <h2>Quebra de Objeções — Como Reter o Aluno</h2>
+          ${objectionsEAD.map(o =>
+            `<details><summary>${o.summary}</summary><div>${o.content}</div></details>`
+          ).join('')}
+        `;
+      } else {
+        document.getElementById('objectionBreaker').innerHTML = `
+          <h2>Quebra de Objeções — Como Reter o Aluno</h2>
+          ${objectionsPresencial.map(o =>
+            `<details><summary>${o.summary}</summary><div>${o.content}</div></details>`
+          ).join('')}
+        `;
+      }
     }
-  });
-});
 
-// ====== BUSCA GLOBAL ======
-function highlight(text, term) {
-  if (!term) return text;
-  return text.replace(new RegExp(`(${term})`, "gi"), '<mark>$1</mark>');
-}
-document.getElementById('searchInput').addEventListener('input', function() {
-  const val = this.value.trim().toLowerCase();
-  let found = 0;
+    document.querySelectorAll('.segment-selector button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.segment-selector button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderSegment(btn.getAttribute('data-segment'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    renderSegment('prep');
 
-  // Cards
-  document.querySelectorAll('.policy-card').forEach(card => {
-    card.style.display = (!val || card.innerText.toLowerCase().includes(val)) ? "" : "none";
-    if (card.style.display !== "none") found++;
-    card.innerHTML = highlight(card.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
-  });
+    document.querySelectorAll('.quick-menu a').forEach(link => {
+      link.addEventListener('click', function(e){
+        e.preventDefault();
+        document.querySelectorAll('.quick-menu a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+        const id = this.getAttribute('href');
+        const target = document.querySelector(id);
+        if (target) {
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - 40,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
 
-  // Scripts
-  document.querySelectorAll('.script-section details').forEach(d => {
-    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
-    if (d.style.display !== "none") found++;
-    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
-  });
+    // ====== BUSCA GLOBAL ======
+    function highlight(text, term) {
+      if (!term) return text;
+      return text.replace(new RegExp(`(${term})`, "gi"), '<mark>$1</mark>');
+    }
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const val = this.value.trim().toLowerCase();
+      let found = 0;
 
-  // Objeções
-  document.querySelectorAll('.objection-breaker details').forEach(d => {
-    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
-    if (d.style.display !== "none") found++;
-    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
-  });
+      document.querySelectorAll('.policy-card').forEach(card => {
+        card.style.display = (!val || card.innerText.toLowerCase().includes(val)) ? "" : "none";
+        if (card.style.display !== "none") found++;
+        card.innerHTML = highlight(card.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+      });
+      document.querySelectorAll('.script-section details, .script-section .accordion-group').forEach(d => {
+        if (d.classList.contains('accordion-group')) {
+          let hasVisible = false;
+          d.querySelectorAll('details').forEach(dt => {
+            const visible = (!val || dt.innerText.toLowerCase().includes(val));
+            dt.style.display = visible ? "" : "none";
+            if (visible) hasVisible = true;
+            dt.innerHTML = highlight(dt.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+          });
+          d.style.display = hasVisible ? "" : "none";
+          if (hasVisible) found++;
+        } else {
+          d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+          if (d.style.display !== "none") found++;
+          d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+        }
+      });
+      document.querySelectorAll('.objection-breaker details').forEach(d => {
+        d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+        if (d.style.display !== "none") found++;
+        d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+      });
+      document.querySelectorAll('.faq-list details').forEach(d => {
+        d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+        if (d.style.display !== "none") found++;
+        d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+      });
+      document.querySelectorAll('.decision-tree details').forEach(d => {
+        d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
+        if (d.style.display !== "none") found++;
+        d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
+      });
 
-  // FAQ
-  document.querySelectorAll('.faq-list details').forEach(d => {
-    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
-    if (d.style.display !== "none") found++;
-    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
-  });
+      document.getElementById('searchFeedback').textContent = val && found === 0
+        ? "Nenhum resultado encontrado para: " + val
+        : "";
+    });
 
-  // Decision tree
-  document.querySelectorAll('.decision-tree details').forEach(d => {
-    d.style.display = (!val || d.innerText.toLowerCase().includes(val)) ? "" : "none";
-    if (d.style.display !== "none") found++;
-    d.innerHTML = highlight(d.innerHTML.replace(/<mark>|<\/mark>/gi, ''), val);
-  });
-
-  document.getElementById('searchFeedback').textContent = val && found === 0
-    ? "Nenhum resultado encontrado para: " + val
-    : "";
-});
-
-// ===== FORMULÁRIO DE SUGESTÃO LAZY LOAD =====
-document.getElementById('loadFormBtn').onclick = function(){
-  document.getElementById('formContainer').innerHTML =
-    `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>`;
-  this.style.display = "none";
-};
+    // ===== FORMULÁRIO DE SUGESTÃO LAZY LOAD =====
+    document.getElementById('loadFormBtn').onclick = function(){
+      document.getElementById('formContainer').innerHTML =
+        `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdV33n5dNoECLljbN5p1WPvrN4Yz50V5GWK96dRA2SqX6_TIQ/viewform?embedded=true" height="700">Carregando…</iframe>`;
+      this.style.display = "none";
+    };
   </script>
 </body>
 </html>
